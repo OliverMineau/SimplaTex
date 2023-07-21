@@ -19,7 +19,15 @@ public class LatexManager {
                 "Document Test 3, \\LaTeX!\n" +
                 "\\end{document}";*/
 
-        String imagePath  = downloadFolderPath + "/Untitled.png";
+        String imagePath  = downloadFolderPath.resolve("Untitled.png").toString();
+        
+        //Change command based on operating system
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win")) {
+            // Windows
+            imagePath = imagePath.replace("\\","/");
+        }
+
         System.out.println(imagePath);
 
         String latexCode = "\\documentclass{article}\n" +
