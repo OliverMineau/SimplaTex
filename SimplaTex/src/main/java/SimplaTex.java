@@ -3,6 +3,7 @@ import Model.LatexManager;
 import Model.Manager;
 import View.MainWindow;
 import javax.swing.*;
+import java.awt.*;
 import java.nio.file.Path;
 
 

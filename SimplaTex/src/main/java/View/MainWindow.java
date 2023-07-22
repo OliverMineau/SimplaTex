@@ -30,34 +30,42 @@ public class MainWindow{
 
         frame.setJMenuBar(createMenuBar());
 
+        //ScrollPanel
         JPanel leftPanel = new JPanel();
         leftPanel.setBackground(Color.BLUE);
         leftPanel.setLayout(new BorderLayout());
-
-
-
         leftPanel.add(new SectionsScrollPane(manager, controller));
 
-
-
-
-
-
-
+        //TextEditor
         JPanel middlePanel = new JPanel();
-        middlePanel.setBackground(Color.RED);
+        middlePanel.setLayout(new BorderLayout());
+        JTextArea textArea = new JTextArea();
+        textArea.setFont( new Font("Courier", Font.PLAIN, 30));
+        JScrollPane textEditorScroll = new JScrollPane (textArea,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        middlePanel.add(textEditorScroll);
 
 
         //String filePath = "/home/oliver/Downloads/SimplaTex/exampleTexMex.pdf";
 
-
         PDFViewManager pdfViewManager = new PDFViewManager();
 
         JPanel container = new JPanel();
-        container.setLayout(new GridLayout(1,3));
-        container.add(leftPanel);
-        container.add(middlePanel);
-        container.add(pdfViewManager.getPanel());
+        container.setLayout(new GridBagLayout());
+        GridBagConstraints gridConstraints = new GridBagConstraints();
+        //container.setLayout(new GridLayout(1,3));
+
+        gridConstraints.fill = GridBagConstraints.BOTH;
+        gridConstraints.weightx = 0.1;
+
+        gridConstraints.weighty = 1;
+        container.add(leftPanel,gridConstraints);
+
+        gridConstraints.weightx = 0.6;
+        container.add(middlePanel,gridConstraints);
+
+        gridConstraints.weightx = 0.1;
+        container.add(pdfViewManager.getPanel(),gridConstraints);
 
         frame.add(container);
 
