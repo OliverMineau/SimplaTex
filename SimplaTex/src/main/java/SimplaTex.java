@@ -1,4 +1,6 @@
+import Controller.Controller;
 import Model.LatexManager;
+import Model.Manager;
 import View.MainWindow;
 import javax.swing.*;
 import java.nio.file.Path;
@@ -9,6 +11,9 @@ public class SimplaTex implements Runnable{
     static Path docPath;
 
     public void run() {
+
+        Manager model = new Manager();
+
         JFrame frame = new JFrame("SimplaTex");
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -19,8 +24,11 @@ public class SimplaTex implements Runnable{
         //Position window to center
         frame.setLocationRelativeTo(null);
 
+        Controller controller = new Controller(model);
+
         //TODO Name of file is generic
-        MainWindow mainWindow = new MainWindow(frame, docPath.resolve("exampleTex.pdf"));
+        //All resources are in Documents/SimplaTex
+        MainWindow mainWindow = new MainWindow(frame, docPath.resolve("exampleTex.pdf"), model, controller);
 
 
     }

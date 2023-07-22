@@ -20,7 +20,7 @@ public class LatexManager {
                 "\\end{document}";*/
 
         String imagePath  = downloadFolderPath.resolve("Untitled.png").toString();
-        
+
         //Change command based on operating system
         String os = System.getProperty("os.name").toLowerCase();
         if (os.contains("win")) {
