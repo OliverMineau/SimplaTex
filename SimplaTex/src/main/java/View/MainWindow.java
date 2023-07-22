@@ -20,6 +20,7 @@ public class MainWindow{
     JFrame frame;
     Manager manager;
     Controller controller;
+    PDFViewManager pdfViewManager;
 
 
     public MainWindow(JFrame frame, Path docPath, Manager manager, Controller controller) {
@@ -48,24 +49,22 @@ public class MainWindow{
 
         //String filePath = "/home/oliver/Downloads/SimplaTex/exampleTexMex.pdf";
 
-        PDFViewManager pdfViewManager = new PDFViewManager();
+        pdfViewManager = new PDFViewManager();
 
-        JPanel container = new JPanel();
-        container.setLayout(new GridBagLayout());
-        GridBagConstraints gridConstraints = new GridBagConstraints();
-        //container.setLayout(new GridLayout(1,3));
 
-        gridConstraints.fill = GridBagConstraints.BOTH;
-        gridConstraints.weightx = 0.1;
+        JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+                true,
+                leftPanel,
+                middlePanel);
 
-        gridConstraints.weighty = 1;
-        container.add(leftPanel,gridConstraints);
+        sp.setResizeWeight(0.1);
 
-        gridConstraints.weightx = 0.6;
-        container.add(middlePanel,gridConstraints);
+        JSplitPane container = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+                true,
+                sp,
+                pdfViewManager.getPanel());
 
-        gridConstraints.weightx = 0.1;
-        container.add(pdfViewManager.getPanel(),gridConstraints);
+        container.setResizeWeight(0.8);
 
         frame.add(container);
 
