@@ -4,16 +4,9 @@ import Controller.Controller;
 import Model.Manager;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.io.File;
+import java.awt.event.*;
 import java.nio.file.Path;
-
-import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 
 public class MainWindow{
 
@@ -21,6 +14,8 @@ public class MainWindow{
     Manager manager;
     Controller controller;
     PDFViewManager pdfViewManager;
+
+    JSplitPane leftSplitPanel,middleSplitPanel,rightSplitPanel;
 
 
     public MainWindow(JFrame frame, Path docPath, Manager manager, Controller controller) {
@@ -32,10 +27,25 @@ public class MainWindow{
         frame.setJMenuBar(createMenuBar());
 
         //ScrollPanel
-        JPanel leftPanel = new JPanel();
-        leftPanel.setBackground(Color.BLUE);
-        leftPanel.setLayout(new BorderLayout());
-        leftPanel.add(new SectionsScrollPane(manager, controller));
+        //Current sections
+        JPanel leftTopPanel = new JPanel();
+        leftTopPanel.setLayout(new BorderLayout());
+        leftTopPanel.add(new CurrentSectionsScrollPane(manager, controller));
+
+        //Available sections
+        JPanel leftBottomPanel = new JPanel();
+        leftBottomPanel.setLayout(new BorderLayout());
+        leftBottomPanel.add(new AvailableSectionsScrollPane(manager, controller));
+
+        leftSplitPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                true,
+                leftTopPanel,
+                leftBottomPanel);
+        leftSplitPanel.setResizeWeight(0.7);
+        leftSplitPanel.setDividerSize(50);
+        leftTopPanel.setMinimumSize(new Dimension(1,500));
+        leftBottomPanel.setMinimumSize(new Dimension(1,500));
+
 
         //TextEditor
         JPanel middlePanel = new JPanel();
@@ -49,24 +59,25 @@ public class MainWindow{
 
         //String filePath = "/home/oliver/Downloads/SimplaTex/exampleTexMex.pdf";
 
+        //PDF
         pdfViewManager = new PDFViewManager();
-
-
-        JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+        middleSplitPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                 true,
-                leftPanel,
+                leftSplitPanel,
                 middlePanel);
 
-        sp.setResizeWeight(0.1);
+        middleSplitPanel.setResizeWeight(0.1);
+        middleSplitPanel.setDividerLocation(0.3);
 
-        JSplitPane container = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+        rightSplitPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                 true,
-                sp,
+                middleSplitPanel,
                 pdfViewManager.getPanel());
 
-        container.setResizeWeight(0.8);
+        rightSplitPanel.setResizeWeight(1);
+        rightSplitPanel.setDividerLocation(0.7);
 
-        frame.add(container);
+        frame.add(rightSplitPanel);
 
         pdfViewManager.openPDF(docPath);
 
@@ -96,12 +107,18 @@ public class MainWindow{
         return fileMenu;
     }
 
-    private JMenuItem createSaveMenu() {
-        JMenuItem saveButton = new JMenuItem("Save");
-        saveButton.setMnemonic( 'S' );
+    private JButton createSaveMenu() {
+        JButton saveButton = new JButton("Save");
+        saveButton.setMnemonic(KeyEvent.VK_S);
         saveButton.addActionListener(this::mnuNewListener);
-
         return saveButton;
+    }
+
+    private JButton createResetViewMenu() {
+        JButton resetButton = new JButton("Reset View");
+        resetButton.setMnemonic(KeyEvent.VK_R);
+        resetButton.addActionListener(this::mnuNewListener);
+        return resetButton;
     }
 
     private JMenuBar createMenuBar() {
@@ -109,16 +126,31 @@ public class MainWindow{
         menuBar.add(createFileMenu());
         menuBar.add(createEditMenu());
         menuBar.add(createSaveMenu());
+        menuBar.add(createResetViewMenu());
         return menuBar;
     }
 
     public void mnuNewListener( ActionEvent event ) {
         System.out.println("Clicked");
 
-        JMenuItem menuItem = (JMenuItem) event.getSource();
-        if(menuItem.getMnemonic() == 'S'){
-            controller.Save();
+        JButton menuItem = (JButton) event.getSource();
+        switch(menuItem.getMnemonic()){
+            case KeyEvent.VK_S:
+                controller.Save();
+                break;
+            case KeyEvent.VK_R:
+                resetViews();
+                break;
         }
+
+    }
+
+    private void resetViews(){
+        leftSplitPanel.resetToPreferredSizes();
+        middleSplitPanel.resetToPreferredSizes();
+        rightSplitPanel.setDividerLocation(0.7);
+        rightSplitPanel.resetToPreferredSizes();
+
     }
 
 }

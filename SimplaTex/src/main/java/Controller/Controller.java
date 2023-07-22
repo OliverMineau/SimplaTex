@@ -15,7 +15,19 @@ public class Controller {
 
     public void SectionsOrderChanged(int indexA,int indexB){
         System.out.println("Scetion " + indexA + " <> " + indexB);
-        manager.SectionsOrderChanged(indexA, indexB);
+        manager.getSectionManager().SectionsOrderChanged(indexA, indexB);
+    }
+
+    public int getSelectedCurrentSection() {
+        return manager.getSectionManager().getSelectedCurrentSection();
+    }
+
+    public void setSelectedCurrentSection(int selectedCurrentSection) {
+        manager.getSectionManager().setSelectedCurrentSection(selectedCurrentSection);
+    }
+
+    public void selectedAvailableSection(int index){
+        manager.getSectionManager().addToCurrentSection(index);
     }
 
 

@@ -20,4 +20,12 @@ public class Manager {
     public SectionManager getSectionManager() {
         return sectionManager;
     }
+
+    public int getSelectedCurrentSection() {
+        return sectionManager.getSelectedCurrentSection();
+    }
+
+    public void setSelectedCurrentSection(int selectedCurrentSection) {
+        sectionManager.setSelectedCurrentSection(selectedCurrentSection);
+    }
 }
