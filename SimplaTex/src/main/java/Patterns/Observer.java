@@ -1,4 +1,12 @@
 package Patterns;
 
-public class Observer {
+public interface Observer {
+
+    default void update(){
+
+    }
+    default void updateEditor(){
+
+    }
+
 }

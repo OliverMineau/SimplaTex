@@ -50,16 +50,17 @@ public class DragListener extends MouseInputAdapter
 
         JPanel j = (JPanel) component;
         spacer = j.getComponent(1);
-        spacer.setVisible(false);
 
         parent.setComponentZOrder(component, 0);
 
-
+        component.requestFocusInWindow();
     }
 
     @Override
     public void mouseDragged(MouseEvent me)
     {
+        spacer.setVisible(false);
+
         JComponent source = (JComponent) me.getComponent();
         JComponent parent = (JComponent) source.getParent();
 
@@ -114,7 +115,7 @@ public class DragListener extends MouseInputAdapter
                     }
 
                     indexB = i;
-
+                    if(indexB == 0) indexB = indexA;
                     controller.SectionsOrderChanged(indexA,indexB);
                     moved = true;
                     break;
@@ -132,11 +133,12 @@ public class DragListener extends MouseInputAdapter
 
         //  Restore layout manager
         parent.setPreferredSize( null );
-        parent.setBounds(originalBounds);
+        //parent.setBounds(originalBounds);
         parent.setLayout(layout);
         spacer.setVisible(true);
         parent.validate();
         parent.repaint();
+
         component.requestFocusInWindow();
     }
 

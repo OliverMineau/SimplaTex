@@ -15,7 +15,7 @@ public class MainWindow{
     Controller controller;
     PDFViewManager pdfViewManager;
 
-    JSplitPane leftSplitPanel,middleSplitPanel,rightSplitPanel;
+    JSplitPane leftSplitPanel,editorSplitPanel,middleSplitPanel,rightSplitPanel;
 
 
     public MainWindow(JFrame frame, Path docPath, Manager manager, Controller controller) {
@@ -43,18 +43,19 @@ public class MainWindow{
                 leftBottomPanel);
         leftSplitPanel.setResizeWeight(0.7);
         leftSplitPanel.setDividerSize(50);
+        leftSplitPanel.setMinimumSize(new Dimension(450,1));
         leftTopPanel.setMinimumSize(new Dimension(1,500));
         leftBottomPanel.setMinimumSize(new Dimension(1,500));
 
 
-        //TextEditor
-        JPanel middlePanel = new JPanel();
-        middlePanel.setLayout(new BorderLayout());
-        JTextArea textArea = new JTextArea();
-        textArea.setFont( new Font("Courier", Font.PLAIN, 30));
-        JScrollPane textEditorScroll = new JScrollPane (textArea,
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        middlePanel.add(textEditorScroll);
+        //TextEditor & Simple Editor
+        JPanel simpleEditor = new SimpleEditor(manager, controller);
+        JPanel textEditor = new TextEditor(manager, controller);
+        editorSplitPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                true,
+                simpleEditor,
+                textEditor);
+        editorSplitPanel.setResizeWeight(0.3);
 
 
         //String filePath = "/home/oliver/Downloads/SimplaTex/exampleTexMex.pdf";
@@ -64,10 +65,9 @@ public class MainWindow{
         middleSplitPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                 true,
                 leftSplitPanel,
-                middlePanel);
+                editorSplitPanel);
 
-        middleSplitPanel.setResizeWeight(0.1);
-        middleSplitPanel.setDividerLocation(0.3);
+        middleSplitPanel.setResizeWeight(0);
 
         rightSplitPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                 true,
@@ -147,6 +147,7 @@ public class MainWindow{
 
     private void resetViews(){
         leftSplitPanel.resetToPreferredSizes();
+        editorSplitPanel.resetToPreferredSizes();
         middleSplitPanel.resetToPreferredSizes();
         rightSplitPanel.setDividerLocation(0.7);
         rightSplitPanel.resetToPreferredSizes();

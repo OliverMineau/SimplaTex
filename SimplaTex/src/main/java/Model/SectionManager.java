@@ -1,13 +1,18 @@
 package Model;
 
+import Patterns.Observable;
+import Sections.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class SectionManager {
+public class SectionManager extends Observable {
 
     private ArrayList<Section> currentSections;
     private int selectedCurrentSection;
+    private int previousExchanged;
+    private int previousSelectedCurrentSection;
     private List<Section> availableSections;
 
 
@@ -19,22 +24,21 @@ public class SectionManager {
 
     private void LoadAvailableSections(){
         availableSections = new ArrayList<>();
-        availableSections.add(new Section("Main Page"));
-        availableSections.add(new Section("Title"));
-        availableSections.add(new Section("Description"));
-        availableSections.add(new Section("Short Code"));
-        availableSections.add(new Section("Code Block"));
-        availableSections.add(new Section("Image"));
-        availableSections.add(new Section("Credits"));
-        availableSections.add(new Section("Installation"));
-        availableSections.add(new Section("Example"));
+        availableSections.add(new Section_Main_Page());
+        availableSections.add(new Section_Title());
+        availableSections.add(new Section_Description());
+        availableSections.add(new Section_Short_Code());
+        availableSections.add(new Section_Code_Block());
+        availableSections.add(new Section_Image());
+        availableSections.add(new Section_Credits());
+        availableSections.add(new Section_Installation());
+        availableSections.add(new Section_Example());
 
     }
 
     private void LoadCurrentSections(){
         currentSections = new ArrayList<>();
-        currentSections.add(new Section("Main Page"));
-        currentSections.add(new Section("Title"));
+        currentSections.add(new Section_Main_Page());
     }
 
     public ArrayList<Section> getCurrentSections() {
@@ -46,8 +50,16 @@ public class SectionManager {
 
 
     public void SectionsOrderChanged(int indexA, int indexB){
-        availableSections.add(indexB, availableSections.remove(indexA));
-        System.out.println("New sections order : " + availableSections);
+        currentSections.add(indexB, currentSections.remove(indexA));
+
+        previousSelectedCurrentSection = selectedCurrentSection;
+        selectedCurrentSection = indexB;
+        previousExchanged = indexA;
+
+        //System.out.println("New sections order : " + availableSections);
+        System.out.println("selectedCurrentSection : " + selectedCurrentSection);
+
+        updateEditor();
     }
 
     public int getSelectedCurrentSection() {
@@ -58,7 +70,17 @@ public class SectionManager {
         this.selectedCurrentSection = selectedCurrentSection;
     }
 
+    public int getPreviousSelectedCurrentSection() {
+        return previousSelectedCurrentSection;
+    }
+
+    public int getPreviousExchanged() {
+        return previousExchanged;
+    }
+
     public void addToCurrentSection(int index){
+
+        previousSelectedCurrentSection = selectedCurrentSection;
 
         int currentIndex = selectedCurrentSection+1;
 
@@ -73,5 +95,11 @@ public class SectionManager {
 
     public void refreshSectionsView(){
         System.out.println("Current sections : " + currentSections.toString());
+        update();
+        updateEditor();
+    }
+
+    public Section getCurrentSelectedSection(){
+        return currentSections.get(selectedCurrentSection);
     }
 }
