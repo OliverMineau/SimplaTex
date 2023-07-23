@@ -8,6 +8,12 @@ public abstract class Section {
 
     public String name;
     public String displayCode;
+    public String FONT_START = "<b><font face=\"Courier\" size=\"10\">";
+    public String FONT_END = "</font></b>";
+    public String RED = "<span style=\"color:red\">";
+    public String END = "</span>";
+    public String BR = "<br>";
+
 
 
     public String getName() {
@@ -27,9 +33,9 @@ public abstract class Section {
         return name;
     }
 
-    public void getPurLatex(){
+    public String getLatex(){
         //TODO Pas ouf la methode
-        System.out.println("Text : " + htmlToPlainText(displayCode.replace("<br>", "\\n")).replace("\\n","\n"));
+        return htmlToPlainText(displayCode.replace("<br>", "\\n")).replace("\\n","\n");
     }
 
     private String htmlToPlainText(String html) {

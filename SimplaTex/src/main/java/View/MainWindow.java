@@ -18,7 +18,7 @@ public class MainWindow{
     JSplitPane leftSplitPanel,editorSplitPanel,middleSplitPanel,rightSplitPanel;
 
 
-    public MainWindow(JFrame frame, Path docPath, Manager manager, Controller controller) {
+    public MainWindow(JFrame frame, Manager manager, Controller controller) {
 
         this.controller = controller;
         this.manager = manager;
@@ -79,7 +79,7 @@ public class MainWindow{
 
         frame.add(rightSplitPanel);
 
-        pdfViewManager.openPDF(docPath);
+        //pdfViewManager.openPDF(docPath);
 
     }
 
@@ -121,12 +121,20 @@ public class MainWindow{
         return resetButton;
     }
 
+    private JButton compileMenu() {
+        JButton resetButton = new JButton("Create PDF");
+        resetButton.setMnemonic(KeyEvent.VK_C);
+        resetButton.addActionListener(this::mnuNewListener);
+        return resetButton;
+    }
+
     private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(createFileMenu());
         menuBar.add(createEditMenu());
         menuBar.add(createSaveMenu());
         menuBar.add(createResetViewMenu());
+        menuBar.add(compileMenu());
         return menuBar;
     }
 
@@ -140,6 +148,10 @@ public class MainWindow{
                 break;
             case KeyEvent.VK_R:
                 resetViews();
+                break;
+            case KeyEvent.VK_C:
+                Path path = controller.createPDF();
+                pdfViewManager.openPDF(path);
                 break;
         }
 

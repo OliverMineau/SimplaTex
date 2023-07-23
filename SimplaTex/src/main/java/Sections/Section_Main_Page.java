@@ -2,22 +2,14 @@ package Sections;
 
 import Model.Section;
 
-public class Section_Main_Page extends Section {
+import java.awt.*;
 
-    String RED = "<span style=\"color:red\">";
-    String END = "</span>";
-    String BR = "<br>";
+public class Section_Main_Page extends Section {
 
     public Section_Main_Page() {
         this.name = "Main Page";
-        this.displayCode = "\\documentclass{article}\n<br>" +
-                "\\usepackage{graphicx} % Required for inserting images\n<br>" +
-                "\n<br>" +
-                "\\title{tt}\n<br>" +
-                "\\author{" + RED + "--AUTHOR--" + END + "}\n<br>" +
-                "\\date{" + RED + "--DATE--" + END + "}\n<br>" +
-                "\n<br>" +
-                "\\begin{document}\n<br>" +
+        this.displayCode =
+                FONT_START +
                 "\\begin{titlepage}\n<br>" +
                 "\\begin{center}\n<br>" +
                 "\n<br>" +
@@ -43,10 +35,7 @@ public class Section_Main_Page extends Section {
                 " \n<br>" +
                 "\\end{center}\n<br>" +
                 "\\end{titlepage}\n<br>" +
-                "\n<br>" +
-                "\n<br>" +
-                "\n<br>" +
-                "\\end{document}";
+                FONT_END;
 
     }
 }

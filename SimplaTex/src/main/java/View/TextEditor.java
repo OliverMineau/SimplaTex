@@ -27,7 +27,8 @@ public class TextEditor extends JPanel implements Observer {
         setLayout(new BorderLayout());
         textArea = new JEditorPane();
         textArea.setContentType("text/html");
-        textArea.setFont( new Font("Courier", Font.PLAIN, 30));
+        //textArea.setFont( new Font("Courier", Font.PLAIN, 30));
+
         JScrollPane textEditorScroll = new JScrollPane (textArea,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         add(textEditorScroll);
@@ -53,6 +54,7 @@ public class TextEditor extends JPanel implements Observer {
 
     @Override
     public void updateEditor() {
+
         textArea.setText(manager.getCurrentSelectedSection().getDisplayCode());
         textArea.setCaretPosition(0);
         System.out.println("Updated Editor");

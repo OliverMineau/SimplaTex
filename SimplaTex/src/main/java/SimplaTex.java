@@ -29,7 +29,7 @@ public class SimplaTex implements Runnable{
 
         //TODO Name of file is generic
         //All resources are in Documents/SimplaTex
-        MainWindow mainWindow = new MainWindow(frame, docPath.resolve("exampleTex.pdf"), model, controller);
+        MainWindow mainWindow = new MainWindow(frame, model, controller);
 
 
     }
@@ -37,11 +37,11 @@ public class SimplaTex implements Runnable{
     public static void main(String[] args) {
 
         //Get document path
-        String home = System.getProperty("user.home");
+        /*String home = System.getProperty("user.home");
         String filePath = home+"/Documents/SimplaTex/";
         docPath = Path.of(filePath);
 
-        LatexManager lm = new LatexManager(docPath);
+        LatexManager lm = new LatexManager(docPath);*/
 
         //Launch Swing Window
         SwingUtilities.invokeLater(new SimplaTex());

@@ -6,20 +6,32 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class LatexManager {
 
+    String HEADER = "\\documentclass{article}\n" +
+            "\\usepackage{graphicx} % Required for inserting images\n" +
+            "\n" +
+            "\\begin{document}";
+
+    String FOOTER = "\\end{document}";
+    Path downloadFolderPath;
+
     public LatexManager(Path downloadFolderPath){
 
-        String fileName = "exampleTex";
+        this.downloadFolderPath = downloadFolderPath;
+
+
+        //String fileName = "exampleTex";
         /*String latexCode = "\\documentclass{article}\n" +
                 "\\begin{document}\n" +
                 "Document Test 3, \\LaTeX!\n" +
                 "\\end{document}";*/
 
-        String imagePath  = downloadFolderPath.resolve("Untitled.png").toString();
+        /*String imagePath  = downloadFolderPath.resolve("Untitled.png").toString();
 
         //Change command based on operating system
         String os = System.getProperty("os.name").toLowerCase();
@@ -68,10 +80,10 @@ public class LatexManager {
                 "\n" +
                 "\\end{document}\n";
 
-        SaveToPDF(latexCode, fileName, downloadFolderPath);
+        SaveToPDF(latexCode, fileName, downloadFolderPath);*/
     }
 
-    public boolean SaveToPDF(String latexCode, String fileName, Path downloadFolderPath){
+    public Path SaveToPDF(String latexCode, String fileName){
 
         try {
             //Create folder if doesn't exist
@@ -125,10 +137,42 @@ public class LatexManager {
         } catch (IOException | InterruptedException e) {
             System.err.println("Error, PDF was not created !");
             e.printStackTrace();
-            return false;
+            return null;
         }
 
-        return true;
+        return downloadFolderPath.resolve(fileName + ".pdf");
     }
+
+    public String Merge(ArrayList<Section> sections){
+
+        String imagePath  = downloadFolderPath.resolve("Untitled.png").toString();
+        String output = HEADER;
+
+        for (Section section : sections) {
+            output += section.getLatex();
+        }
+
+        output += FOOTER;
+
+        output = output.replace("--PATH TO LOGO--", imagePath);
+
+        return output;
+    }
+
+
+    /**
+     *
+     * Manage Images and different OS
+     *
+     *
+     *  String imagePath  = downloadFolderPath.resolve("Untitled.png").toString();
+     *
+     *         //Change command based on operating system
+     *         String os = System.getProperty("os.name").toLowerCase();
+     *         if (os.contains("win")) {
+     *             // Windows
+     *             imagePath = imagePath.replace("\\","/");
+     *         }
+     */
 
 }

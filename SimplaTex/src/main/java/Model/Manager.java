@@ -1,5 +1,7 @@
 package Model;
 
+import java.nio.file.Path;
+
 public class Manager {
 
     private SectionManager sectionManager;
@@ -13,10 +15,8 @@ public class Manager {
         sectionManager = new SectionManager();
     }
 
-
     public void SectionsOrderChanged(int indexA,int indexB){
         sectionManager.SectionsOrderChanged(indexA, indexB);
-        displaySelectedSectionCode();
     }
 
     public SectionManager getSectionManager() {
@@ -27,20 +27,18 @@ public class Manager {
         return sectionManager.getSelectedCurrentSection();
     }
 
-    public void setSelectedCurrentSection(int selectedCurrentSection) {
-        sectionManager.setSelectedCurrentSection(selectedCurrentSection);
-    }
-
     public void addToCurrentSection(int index){
         sectionManager.addToCurrentSection(index);
-        displaySelectedSectionCode();
     }
 
     public Section getCurrentSelectedSection(){
         return sectionManager.getCurrentSelectedSection();
     }
 
-    public void displaySelectedSectionCode(){
-        //editorManager.displaySelectedCode(getCurrentSelectedSection());
-    }
+    /*public String getFullLatexCode(){
+        LatexCodeMerger latexCodeMerger = new LatexCodeMerger(getSectionManager().getCurrentSections());
+        return latexCodeMerger.Merge();
+    }*/
+
+
 }
