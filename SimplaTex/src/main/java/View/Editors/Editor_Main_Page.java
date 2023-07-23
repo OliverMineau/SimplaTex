@@ -7,18 +7,25 @@ public class Editor_Main_Page extends JPanel {
 
     Font labelFont;
     Font textFieldFont;
+    GridBagConstraints gridBagConstraints;
 
     public Editor_Main_Page() {
-        GridLayout gridLayout = new GridLayout(0, 1);
-        gridLayout.setVgap(30);
-        setLayout(gridLayout);
-        setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
 
+        GridBagLayout gridBagLayout = new GridBagLayout();
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.anchor = GridBagConstraints.CENTER; // Align elements to the top-left corner
+        gridBagConstraints.fill = GridBagConstraints.BOTH; // Elements will fill horizontally
+        gridBagConstraints.gridy = 0; // Start at the top (first row)
+        gridBagConstraints.weighty = 1;
+        gridBagConstraints.weightx = 1;
+
+        setLayout(gridBagLayout);
+
+        setBackground(Color.BLUE);
 
         labelFont = new Font("Arial", Font.BOLD, 30);
         textFieldFont = new Font("Arial", Font.PLAIN, 30);
 
-        // Add rows (each row contains a JLabel and a JTextField)
         createTextPanel("Logo Path :", new JTextField());
         createTextPanel("Level of Education :", new JTextField());
         createTextPanel("Field of Study :", new JTextField());
@@ -34,7 +41,8 @@ public class Editor_Main_Page extends JPanel {
         textField.setFont(textFieldFont);
         jPanel.add(textField, BorderLayout.SOUTH);
 
-        add(jPanel);
+        gridBagConstraints.gridy++; // Increment the row number for the next element
+        add(jPanel, gridBagConstraints);
     }
 
     private void createTextAreaPanel(String titleText, JTextArea textArea) {
@@ -44,13 +52,14 @@ public class Editor_Main_Page extends JPanel {
         textArea.setRows(5);
         jPanel.add(textArea, BorderLayout.SOUTH);
 
-        add(jPanel);
+        gridBagConstraints.gridy++; // Increment the row number for the next element
+        add(jPanel, gridBagConstraints);
     }
 
-    public JPanel createTitle(String titleText){
+    public JPanel createTitle(String titleText) {
         BorderLayout borderLayout = new BorderLayout();
         JPanel jPanel = new JPanel(borderLayout);
-        jPanel.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
+        jPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JLabel label = new JLabel(titleText);
         label.setFont(labelFont);

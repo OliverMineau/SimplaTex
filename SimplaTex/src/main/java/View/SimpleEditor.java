@@ -20,11 +20,20 @@ public class SimpleEditor extends JPanel implements Observer {
         this.manager = manager;
         this.controller = controller;
 
-        setLayout(new GridLayout(1,2));
+        setLayout(new GridLayout(1, 2));
 
-        JPanel leftPanel = new JPanel();
-        leftPanel.setLayout(new BorderLayout());
-        leftPanel.add(new JScrollPane(new Editor_Main_Page()), BorderLayout.CENTER);
+        JPanel leftPanel = new JPanel(new BorderLayout());
+
+        // Create the Editor_Main_Page inside a JScrollPane
+        Editor_Main_Page editorMainPage = new Editor_Main_Page();
+        JScrollPane scrollPane = new JScrollPane(editorMainPage);
+
+        // Set the scroll pane size policy to fill the available space
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        leftPanel.add(scrollPane, BorderLayout.CENTER);
+        add(leftPanel);
 
         JFileChooser rightPanel = new JFileChooser();
         rightPanel.setDragEnabled(true);
@@ -33,24 +42,19 @@ public class SimpleEditor extends JPanel implements Observer {
         rightPanel.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
         //TODO Marche pas affichage icons
-        rightPanel.setFileView(new FileView(){
-            public Icon getIcon(File f)
-            {
+        rightPanel.setFileView(new FileView() {
+            public Icon getIcon(File f) {
                 return FileSystemView.getFileSystemView().getSystemIcon(f);
             }
         });
 
-
         //rightPanel.setFileFilter( new FolderFilter());
-
-        add(leftPanel);
         add(rightPanel);
     }
 
-
     private class FolderFilter extends javax.swing.filechooser.FileFilter {
         @Override
-        public boolean accept( File file ) {
+        public boolean accept(File file) {
             return file.isDirectory();
         }
 
@@ -59,7 +63,4 @@ public class SimpleEditor extends JPanel implements Observer {
             return "We only take directories";
         }
     }
-
 }
-
-
