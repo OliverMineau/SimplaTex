@@ -61,11 +61,15 @@ public class Editor_Main_Page extends SimpleEditorHelper{
         section.addInfo("2", edLevel.getText());
         section.addInfo("3", fieldStdy.getText());
         section.addInfo("4", title.getText());
-        section.addInfo("5", date.getText());
 
+        ArrayList<String> authorsText = new ArrayList<>();
         for (int i = 0; i < authors.size(); i++) {
-            section.addInfo(String.valueOf(i+6), authors.get(i).getText());
+            authorsText.add(authors.get(i).getText());
         }
+        //section.addInfos("5", authorsText);
+        section.addInfo("5", authorsText.get(0));
+
+        section.addInfo("6", date.getText());
 
         System.out.println("Saved SimpleEditor");
 

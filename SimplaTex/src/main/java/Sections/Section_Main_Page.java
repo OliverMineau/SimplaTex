@@ -5,6 +5,8 @@ import View.SimpleEditors.Editor_Main_Page;
 
 public class Section_Main_Page extends Section {
 
+    String authorSeperator = "  \\vspace{\\baselineskip}\n<br>";
+
     public Section_Main_Page() {
         this.editor = new Editor_Main_Page(this);
         this.name = "Main Page";
@@ -24,10 +26,9 @@ public class Section_Main_Page extends Section {
                 "{\\LARGE \\textbf{ " + element( "--TITLE--", "red") + " \\\\[0.4cm]}\n<br>" +
                 "\\rule{\\linewidth}{0.5mm}} \\\\[1.5cm]\n<br>" +
                 "\n<br>" +
-                "{\\Large\n<br>" +
-                "  " + element( "--NAME--", "red") + " \\\\\n<br>" +
-                "  \\vspace{\\baselineskip}\n<br>" +
-                "}\n<br>" +
+
+                "  " + multiElement( "--AUTHOR--",1, authorSeperator, "red") +
+                "\n<br>" +
                 "\n<br>" +
                 "\\vfill\n<br>" +
                 "\n<br>" +

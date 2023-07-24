@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Section {
@@ -28,6 +29,27 @@ public abstract class Section {
     public String element(String text, String color){
         lastId++;
         return "<span id=\""+ lastId +"\" class=\"" + text +  "\" style=\"color:"+ color +"\">" + text + "</span>" ;
+    }
+
+    public String multiElement(String text, int count, String seperator, String color){
+
+        return element(text,color);
+
+        /*lastId++;
+
+        String divHeader = "<div id=\"" + lastId + "\">";
+        String divFooter = "}</div>";
+
+        String output = divHeader;
+        for (int i = 0; i < count; i++) {
+            String id = lastId + "-" + i;
+            String element =  "{\\Large\n<br> \n<span id=\""+ id +"\" class=\"" + text +  "\" style=\"color:"+ color +"\">" + text + "</span> \\\\\n<br>" ;
+            output+=element;
+            output+=seperator;
+        }
+
+        output+=divFooter;
+        return output;*/
     }
 
 
@@ -99,7 +121,44 @@ public abstract class Section {
             elm.text(value);
             displayCode = htmlDoc.html();
         }
+    }
 
+    public void addInfos(String key, ArrayList<String> values){
+
+        Document htmlDoc = Jsoup.parse(displayCode);
+
+        Element elm = htmlDoc.getElementById(key);
+        if(elm != null){
+            String id = key + "-" + 0;
+            Element content = htmlDoc.getElementById(id);
+
+            elm.parent().select("span").remove();
+            elm.append(multiContent(values, content, key));
+            displayCode = htmlDoc.html();
+        }
+    }
+
+    public String multiContent(ArrayList<String> values, Element content, String key){
+
+        String output = "";
+
+        for (int i = 0; i < values.size(); i++) {
+
+            String value = values.get(i);
+            String id = key + "-" + i;
+            simpleEditorValues.put(id, value);
+
+            Element newContent = content.clone();
+            newContent.id(id);
+
+            if(value.equals("")) value = newContent.className();
+
+            newContent.text(value);
+
+            output+= newContent.toString();
+        }
+
+        return output;
     }
 
 }

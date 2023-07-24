@@ -140,6 +140,7 @@ public abstract class SimpleEditorHelper extends ObservableJPanel {
                 jTextFields.add(new JTextField());
                 int index = jTextFields.size();
                 jTextFields.get(index-1).setFont(textFieldFont);
+                jTextFields.get(index-1).getDocument().addDocumentListener(simpleEditorListener);
                 jPanel.add(jTextFields.get(index-1),index);
 
                 if(index > 1) rmvBtn.setVisible(true);
