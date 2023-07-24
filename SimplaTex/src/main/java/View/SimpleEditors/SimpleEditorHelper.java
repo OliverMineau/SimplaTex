@@ -1,4 +1,7 @@
-package View.Editors;
+package View.SimpleEditors;
+
+import Controller.SimpleEditorListener;
+import Patterns.ObservableJPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -6,19 +9,22 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 
-public abstract class SimpleEditorHelper extends JPanel{
+public abstract class SimpleEditorHelper extends ObservableJPanel {
 
     public Font labelFont;
     public Font textFieldFont;
     public GridBagConstraints gridBagConstraints;
+    private SimpleEditorListener simpleEditorListener;
 
     public SimpleEditorHelper() {
+
+        simpleEditorListener = new SimpleEditorListener(this);
+
         GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.anchor = GridBagConstraints.CENTER; // Align elements to the top-left corner
@@ -31,6 +37,7 @@ public abstract class SimpleEditorHelper extends JPanel{
 
         labelFont = new Font("Arial", Font.BOLD, 30);
         textFieldFont = new Font("Arial", Font.PLAIN, 30);
+
     }
 
     public JTextField createImagePanel(String titleText) {
@@ -50,16 +57,19 @@ public abstract class SimpleEditorHelper extends JPanel{
             @Override
             public void insertUpdate(DocumentEvent documentEvent) {
                 updateImage(documentEvent);
+                notifyAndSave();
             }
 
             @Override
             public void removeUpdate(DocumentEvent documentEvent) {
                 updateImage(documentEvent);
+                notifyAndSave();
             }
 
             @Override
             public void changedUpdate(DocumentEvent documentEvent) {
                 updateImage(documentEvent);
+                notifyAndSave();
             }
 
             private void updateImage(DocumentEvent documentEvent){
@@ -85,6 +95,7 @@ public abstract class SimpleEditorHelper extends JPanel{
 
         JTextField textField = new JTextField();
         textField.setFont(textFieldFont);
+        textField.getDocument().addDocumentListener(simpleEditorListener);
         jPanel.add(textField, BorderLayout.SOUTH);
 
         gridBagConstraints.gridy++; // Increment the row number for the next element
@@ -99,6 +110,7 @@ public abstract class SimpleEditorHelper extends JPanel{
         JTextArea textArea = new JTextArea();
         textArea.setFont(textFieldFont);
         textArea.setRows(5);
+        textArea.getDocument().addDocumentListener(simpleEditorListener);
         jPanel.add(textArea, BorderLayout.SOUTH);
 
         gridBagConstraints.gridy++; // Increment the row number for the next element
@@ -114,6 +126,7 @@ public abstract class SimpleEditorHelper extends JPanel{
         ArrayList<JTextField> jTextFields = new ArrayList<>();
         jTextFields.add(new JTextField());
         jTextFields.get(0).setFont(textFieldFont);
+        jTextFields.get(0).getDocument().addDocumentListener(simpleEditorListener);
         jPanel.add(jTextFields.get(0));
 
         JPanel buttons = new JPanel(new GridLayout(0,2));
@@ -126,7 +139,8 @@ public abstract class SimpleEditorHelper extends JPanel{
             public void mouseClicked(MouseEvent mouseEvent) {
                 jTextFields.add(new JTextField());
                 int index = jTextFields.size();
-                jPanel.add(jTextFields.get(index-1),index-1);
+                jTextFields.get(index-1).setFont(textFieldFont);
+                jPanel.add(jTextFields.get(index-1),index);
 
                 if(index > 1) rmvBtn.setVisible(true);
 
@@ -152,7 +166,7 @@ public abstract class SimpleEditorHelper extends JPanel{
                 if(index == 1) return;
 
                 jTextFields.remove(index-1);
-                jPanel.remove(index-1);
+                jPanel.remove(index);
 
                 if(jTextFields.size() == 1) {
                     rmvBtn.setVisible(false);
@@ -193,5 +207,12 @@ public abstract class SimpleEditorHelper extends JPanel{
         label.setFont(labelFont);
         jPanel.add(label, BorderLayout.NORTH);
         return jPanel;
+    }
+
+    public abstract void updateViews();
+    public abstract void saveViews();
+    public void notifyAndSave(){
+        saveViews();
+        update();
     }
 }

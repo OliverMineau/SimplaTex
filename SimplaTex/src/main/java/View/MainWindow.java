@@ -4,6 +4,7 @@ import Controller.Controller;
 import Model.Manager;
 
 import javax.swing.*;
+import javax.xml.stream.events.EndDocument;
 import java.awt.*;
 import java.awt.event.*;
 import java.nio.file.Path;
@@ -49,8 +50,9 @@ public class MainWindow{
 
 
         //TextEditor & Simple Editor
-        JPanel simpleEditor = new SimpleEditor(manager, controller);
-        JPanel textEditor = new TextEditor(manager, controller);
+        Editors editors = new Editors(manager, controller);
+        JPanel simpleEditor = editors.getSimpleEditor();
+        JPanel textEditor = editors.getTextEditor();
         editorSplitPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                 true,
                 simpleEditor,

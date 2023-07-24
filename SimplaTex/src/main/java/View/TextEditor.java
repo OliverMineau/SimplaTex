@@ -2,6 +2,7 @@ package View;
 
 import Controller.Controller;
 import Model.Manager;
+import Patterns.Observable;
 import Patterns.Observer;
 
 import javax.swing.*;
@@ -23,6 +24,7 @@ public class TextEditor extends JPanel implements Observer {
         this.controller = controller;
 
         manager.getSectionManager().addObserver(this);
+        manager.getSectionManager().getCurrentSelectedSection().editor.addObserver(this);
 
         setLayout(new BorderLayout());
         textArea = new JEditorPane();
@@ -53,11 +55,18 @@ public class TextEditor extends JPanel implements Observer {
     }
 
     @Override
-    public void updateEditor() {
-
+    public void update(){
         textArea.setText(manager.getCurrentSelectedSection().getDisplayCode());
         textArea.setCaretPosition(0);
-        System.out.println("Updated Editor");
+
+        System.out.println("Updated textEditor");
+    }
+
+    @Override
+    public void updateJPanel(){
+        textArea.setText(manager.getCurrentSelectedSection().getDisplayCode());
+        textArea.setCaretPosition(0);
+        System.out.println("Updated textEditor from Jpanel");
     }
 
 

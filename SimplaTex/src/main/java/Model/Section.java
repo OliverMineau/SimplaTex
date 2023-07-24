@@ -1,19 +1,34 @@
 package Model;
 
+import View.SimpleEditors.SimpleEditorHelper;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
 import java.io.StringReader;
+import java.util.HashMap;
 
 public abstract class Section {
 
     public String name;
     public String displayCode;
+
+    public SimpleEditorHelper editor;
+    private HashMap<String, String> simpleEditorValues = new HashMap<>();
+
     public String FONT_START = "<b><font face=\"Courier\" size=\"10\">";
     public String FONT_END = "</font></b>";
     public String RED = "<span style=\"color:red\">";
     public String END = "</span>";
     public String BR = "<br>";
 
+    private int lastId = 0;
+    public String element(String text, String color){
+        lastId++;
+        return "<span id=\""+ lastId +"\" class=\"" + text +  "\" style=\"color:"+ color +"\">" + text + "</span>" ;
+    }
 
 
     public String getName() {
@@ -34,8 +49,12 @@ public abstract class Section {
     }
 
     public String getLatex(){
+
         //TODO Pas ouf la methode
-        return htmlToPlainText(displayCode.replace("<br>", "\\n")).replace("\\n","\n");
+        String htmlCode = displayCode.replace("<br>", "\\n");
+        String plainLatex = htmlToPlainText(htmlCode);
+        String latex = plainLatex.replace("\\n","\n");
+        return latex;
     }
 
     private String htmlToPlainText(String html) {
@@ -62,4 +81,25 @@ public abstract class Section {
             return "";
         }
     }
+
+    public HashMap<String,String> getInfo(){
+        return simpleEditorValues;
+    }
+
+    public void addInfo(String key, String value){
+        simpleEditorValues.put(key, value);
+
+        Document htmlDoc = Jsoup.parse(displayCode);
+
+        Element elm = htmlDoc.getElementById(key);
+        if(elm != null){
+
+            if(value.equals("")) value = elm.className();
+
+            elm.text(value);
+            displayCode = htmlDoc.html();
+        }
+
+    }
+
 }

@@ -59,7 +59,7 @@ public class SectionManager extends Observable {
         //System.out.println("New sections order : " + availableSections);
         System.out.println("selectedCurrentSection : " + selectedCurrentSection);
 
-        updateEditor();
+        update();
     }
 
     public int getSelectedCurrentSection() {
@@ -96,7 +96,6 @@ public class SectionManager extends Observable {
     public void refreshSectionsView(){
         System.out.println("Current sections : " + currentSections.toString());
         update();
-        updateEditor();
     }
 
     public Section getCurrentSelectedSection(){

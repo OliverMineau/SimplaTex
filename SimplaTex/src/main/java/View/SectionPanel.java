@@ -101,4 +101,8 @@ public class SectionPanel extends JPanel implements Observer {
         itemPanel.setBorder(null);
     }
 
+    @Override
+    public void update() {
+
+    }
 }

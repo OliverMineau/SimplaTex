@@ -5,7 +5,7 @@ public interface Observer {
     default void update(){
 
     }
-    default void updateEditor(){
+    default void updateJPanel(){
 
     }
 

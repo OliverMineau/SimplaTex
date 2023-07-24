@@ -5,7 +5,7 @@ import java.nio.file.Path;
 public class Manager {
 
     private SectionManager sectionManager;
-    private EditorManager editorManager;
+    //private EditorManager editorManager;
 
     public Manager() {
         Initialise();
@@ -34,11 +34,6 @@ public class Manager {
     public Section getCurrentSelectedSection(){
         return sectionManager.getCurrentSelectedSection();
     }
-
-    /*public String getFullLatexCode(){
-        LatexCodeMerger latexCodeMerger = new LatexCodeMerger(getSectionManager().getCurrentSections());
-        return latexCodeMerger.Merge();
-    }*/
 
 
 }

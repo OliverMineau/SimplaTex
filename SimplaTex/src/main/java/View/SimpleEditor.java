@@ -3,7 +3,7 @@ package View;
 import Controller.Controller;
 import Model.Manager;
 import Patterns.Observer;
-import View.Editors.Editor_Main_Page;
+import View.SimpleEditors.SimpleEditorHelper;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
@@ -15,18 +15,21 @@ public class SimpleEditor extends JPanel implements Observer {
 
     Manager manager;
     Controller controller;
+    SimpleEditorHelper selectedSimpleEditor;
+    JScrollPane scrollPane;
 
     public SimpleEditor(Manager manager, Controller controller) {
         this.manager = manager;
         this.controller = controller;
+
+        manager.getSectionManager().addObserver(this);
 
         setLayout(new GridLayout(1, 2));
 
         JPanel leftPanel = new JPanel(new BorderLayout());
 
         // Create the Editor_Main_Page inside a JScrollPane
-        Editor_Main_Page editorMainPage = new Editor_Main_Page();
-        JScrollPane scrollPane = new JScrollPane(editorMainPage);
+        scrollPane = new JScrollPane();
 
         // Set the scroll pane size policy to fill the available space
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -48,19 +51,15 @@ public class SimpleEditor extends JPanel implements Observer {
             }
         });
 
-        //rightPanel.setFileFilter( new FolderFilter());
         add(rightPanel);
     }
 
-    private class FolderFilter extends javax.swing.filechooser.FileFilter {
-        @Override
-        public boolean accept(File file) {
-            return file.isDirectory();
-        }
 
-        @Override
-        public String getDescription() {
-            return "We only take directories";
-        }
+    @Override
+    public void update() {
+        SimpleEditorHelper editor = manager.getSectionManager().getCurrentSelectedSection().editor;
+        //editor.updateViews();
+        scrollPane.setViewportView(editor);
     }
+
 }

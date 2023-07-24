@@ -1,14 +1,15 @@
 package Patterns;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Observable {
+public class ObservableJPanel extends JPanel {
 
     List<Observer> observers;
 
-    public Observable() {
+    public ObservableJPanel() {
         observers = new ArrayList<>();
     }
 
@@ -22,7 +23,7 @@ public class Observable {
         it = observers.iterator();
         while (it.hasNext()) {
             Observer o = it.next();
-            o.update();
+            o.updateJPanel();
         }
     }
 
