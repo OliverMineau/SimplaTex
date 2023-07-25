@@ -8,11 +8,13 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class SimpleEditorHelper extends ObservableJPanel {
 
@@ -120,15 +122,19 @@ public abstract class SimpleEditorHelper extends ObservableJPanel {
         return textArea;
     }
 
-    public ArrayList<JTextField> createMultipleTextsPanel(String titleText) {
+    public void createMultipleTextsPanel(String titleText, String index, HashMap<String, JTextComponent> components) {
+
         JPanel jPanel = createTitle(titleText);
         jPanel.setLayout(new GridLayout(0,1));
 
-        ArrayList<JTextField> jTextFields = new ArrayList<>();
-        jTextFields.add(new JTextField());
-        jTextFields.get(0).setFont(textFieldFont);
-        jTextFields.get(0).getDocument().addDocumentListener(simpleEditorListener);
-        jPanel.add(jTextFields.get(0));
+        JTextField jTextField = new JTextField();
+        jTextField.setFont(textFieldFont);
+        jTextField.getDocument().addDocumentListener(simpleEditorListener);
+        jPanel.add(jTextField);
+
+        //Add main textfield to components
+        components.put(index,jTextField);
+        final int[] subindex = {0};
 
         JPanel buttons = new JPanel(new GridLayout(0,2));
         JButton addBtn = new JButton("Add");
@@ -138,13 +144,18 @@ public abstract class SimpleEditorHelper extends ObservableJPanel {
         addBtn.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                jTextFields.add(new JTextField());
-                int index = jTextFields.size();
-                jTextFields.get(index-1).setFont(textFieldFont);
-                jTextFields.get(index-1).getDocument().addDocumentListener(simpleEditorListener);
-                jPanel.add(jTextFields.get(index-1),index);
 
-                if(index > 1) rmvBtn.setVisible(true);
+                subindex[0]++;
+
+                JTextField jTextField = new JTextField();
+                jTextField.setFont(textFieldFont);
+                jTextField.getDocument().addDocumentListener(simpleEditorListener);
+                jPanel.add(jTextField);
+
+                //Add textfield to components
+                components.put(index + "-" + subindex[0], jTextField);
+
+                if(subindex[0] >= 1) rmvBtn.setVisible(true);
 
                 jPanel.revalidate();
                 jPanel.repaint();
@@ -163,14 +174,14 @@ public abstract class SimpleEditorHelper extends ObservableJPanel {
         rmvBtn.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                int index = jTextFields.size();
 
-                if(index == 1) return;
+                if(subindex[0] == 0) return;
 
-                jTextFields.remove(index-1);
-                jPanel.remove(index);
+                jPanel.remove(subindex[0]);
 
-                if(jTextFields.size() == 1) {
+                components.remove(index + "-" + subindex[0]);
+
+                if(subindex[0] == 1) {
                     rmvBtn.setVisible(false);
                     return;
                 }
@@ -197,7 +208,6 @@ public abstract class SimpleEditorHelper extends ObservableJPanel {
         gridBagConstraints.gridy++; // Increment the row number for the next element
         add(jPanel, gridBagConstraints);
 
-        return jTextFields;
     }
 
     public JPanel createTitle(String titleText) {

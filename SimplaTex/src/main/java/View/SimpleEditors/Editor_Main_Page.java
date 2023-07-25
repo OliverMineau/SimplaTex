@@ -19,20 +19,20 @@ public class Editor_Main_Page extends SimpleEditorHelper{
 
     public Editor_Main_Page(Section section) {
 
-        this.section = section;
+        /*this.section = section;
 
         imagePath = createImagePanel("Logo Image Path");
         edLevel = createTextPanel("Level of Education :");
         fieldStdy = createTextPanel("Field of Study :");
         title = createTextPanel("Title :");
         authors = createMultipleTextsPanel("Authors :");
-        date = createTextPanel("Date :");
+        date = createTextPanel("Date :");*/
     }
 
     @Override
     public void updateViews() {
 
-        HashMap<String, String> info = section.getInfo();
+        /*HashMap<String, String> info = section.getInfo();
 
         String value;
 
@@ -51,13 +51,13 @@ public class Editor_Main_Page extends SimpleEditorHelper{
 
         System.out.println("Updated SimpleEditor");
         revalidate();
-        repaint();
+        repaint();*/
     }
 
     @Override
     public void saveViews() {
 
-        section.addInfo("1", imagePath.getText());
+        /*section.addInfo("1", imagePath.getText());
         section.addInfo("2", edLevel.getText());
         section.addInfo("3", fieldStdy.getText());
         section.addInfo("4", title.getText());
@@ -72,7 +72,7 @@ public class Editor_Main_Page extends SimpleEditorHelper{
 
         section.addInfo("6", date.getText());
 
-        System.out.println("Saved SimpleEditor");
+        System.out.println("Saved SimpleEditor");*/
     }
 
 }

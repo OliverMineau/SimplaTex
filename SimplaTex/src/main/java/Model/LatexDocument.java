@@ -77,13 +77,11 @@ public class LatexDocument {
     }
 
 
-
-
     /**
      * Ajouter un element apres un autre
      */
     public void addElementAfter(String afterID, StringElement element) {
-        int elmIndex = findElement(afterID);
+        int elmIndex = findElementIndex(afterID);
         if(elmIndex == -1) return;
         int index = elmIndex+1;
         if(elmIndex+1 == contentArray.size()) contentArray.add(element);
@@ -103,7 +101,7 @@ public class LatexDocument {
      * Supprimer l'element id
      */
     public void removeElement(String id) {
-        int index = findElement(id);
+        int index = findElementIndex(id);
         if(index == -1) return;
         contentArray.remove(index);
     }
@@ -113,7 +111,7 @@ public class LatexDocument {
      * modifier le contenu (texte) d'un element
      */
     public void modifyElement(String id, StringElement element) {
-        int index = findElement(id);
+        int index = findElementIndex(id);
         contentArray.set(index, element);
     }
 
@@ -130,7 +128,7 @@ public class LatexDocument {
         return null;
     }
 
-    public int findElement(String id) {
+    public int findElementIndex(String id) {
         for (StringElement elm : contentArray) {
             if(elm.id.equals(id)){
                 return contentArray.indexOf(elm);
@@ -152,7 +150,7 @@ public class LatexDocument {
      * Ajouter du texte apres un element
      */
     public void addTextAfter(String id, String text) {
-        int elmIndex = findElement(id);
+        int elmIndex = findElementIndex(id);
         if(elmIndex == -1) return;
         int index = elmIndex+1;
         if(elmIndex+1 == contentArray.size()) contentArray.add(new StringElement(text));
@@ -190,15 +188,11 @@ public class LatexDocument {
 
         for(StringElement elm : contentArray) {
             if (elm.type.equals("PlainText")) {
-                output += elm.text;
+                output += elm.toHTML();
 
             }else if(elm.type.equals("TextArea")){
-                String text = elm.text;
-                text = text.replace("\n","<br>");
-                text = text.replace(" ","&nbsp;");
-                text = text.replace("\t","&nbsp;&nbsp;");
 
-                String element = createSpanElement(elm,text);
+                String element = createSpanElement(elm,elm.toHTML());
 
                 output += element;
 
@@ -210,6 +204,11 @@ public class LatexDocument {
 
         output += FONT_END;
         return output;
+    }
+
+
+    public void updateWithDisplayText(String displayText){
+
     }
 
     public String createSpanElement(StringElement elm, String overrideText){

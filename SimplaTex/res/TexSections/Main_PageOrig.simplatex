@@ -14,6 +14,7 @@
 
 {\Large
   <span id="5" class="--AUTHOR--|Author" type="MultiText" style="color:red">--AUTHOR--</span> \\
+  <span class="skipline">\vspace{\baselineskip}</span>
 }
 
 \vfill

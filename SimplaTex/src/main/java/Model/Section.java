@@ -20,8 +20,9 @@ public abstract class Section {
     public String name;
 
     //displayCode will be
-    LatexDocument latexDocument;
-    public String displayCode;
+    public LatexDocument latexDocument;
+    //public String displayCode;
+
     public String header;
 
     public SimpleEditorHelper editor;
@@ -65,12 +66,19 @@ public abstract class Section {
         return name;
     }
 
-    public String getDisplayCode() {
+    /*public String getDisplayCode() {
         return displayCode;
-    }
+    }*/
 
-    public void setDisplayCode(String latexCode) {
-        this.displayCode = latexCode;
+    public void setDisplayCode(String textEditorCode) {
+        //this.displayCode = latexCode;
+        /**
+         * Get the code and transform in StringElements
+         */
+
+        System.out.println("TextEditor code : " + textEditorCode);
+
+
     }
 
     @Override
@@ -79,10 +87,7 @@ public abstract class Section {
     }
 
     public String getLatex(){
-        String htmlCode = displayCode.replace("<br>", "\\n*");
-        String plainLatex = htmlToPlainText(htmlCode);
-        plainLatex = plainLatex.replace("\\n*", "\n");
-        return plainLatex;
+        return latexDocument.convertToPlainLatex();
     }
 
     private String htmlToPlainText(String html) {
@@ -145,23 +150,13 @@ public abstract class Section {
     public void addInfo(String key, String value){
         simpleEditorValues.put(key, value);
 
-        Document htmlDoc = Jsoup.parse(displayCode);
-
-        Element elm = htmlDoc.getElementById(key);
-        if(elm != null){
-
-            if(value.equals("")) value = elm.className();
-            else if(elm.className().equals("--CODE--")){
-                value = value.replace("\n","<br>");
-                value = value.replace(" ","&nbsp;");
-                value = value.replace("\t","&nbsp;&nbsp;");
-            }
-            elm.html(value);
-            displayCode = htmlDoc.html();
-        }
+        //Edit element from LatexDocument
+        StringElement elm = latexDocument.getElement(key);
+        if(value.equals("")) elm.text = elm.className;
+        else elm.text = value;
     }
 
-    public void addInfos(String key, ArrayList<String> values){
+    /*public void addInfos(String key, ArrayList<String> values){
 
         Document htmlDoc = Jsoup.parse(displayCode);
 
@@ -174,7 +169,7 @@ public abstract class Section {
             elm.append(multiContent(values, content, key));
             displayCode = htmlDoc.html();
         }
-    }
+    }*/
 
     public String multiContent(ArrayList<String> values, Element content, String key){
 

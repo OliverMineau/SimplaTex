@@ -13,6 +13,7 @@ public class EditorBase extends SimpleEditorHelper{
     Section section;
     HashMap<String, JTextComponent> components;
     public EditorBase(Section section) {
+        this.components = new HashMap<>();
 
         this.section = section;
 
@@ -24,23 +25,27 @@ public class EditorBase extends SimpleEditorHelper{
             add to components
          */
 
-
-        /** Example
         for (StringElement elm : section.getLatexDocument().getElements()) {
             if(elm.getType().equals("TextField")){
                 components.put(elm.getId(), createTextPanel(elm.getTitle()));
 
             }else if(elm.getType().equals("TextArea")){
-                int index = 0;
-                //Bien passer components pour le mouse click
-                for(JTextField txt : createTextAreaPanel(elm.getTitle(), components)){
-                    components.put(elm.getId() + "-" + index, txt);
-                }
+                components.put(elm.getId(), createTextAreaPanel(elm.getTitle()));
 
             }else if(elm.getType().equals("Image")){
                 components.put(elm.getId(), createImagePanel(elm.getTitle()));
+
+            }else if(elm.getType().equals("MultiText")){
+                createMultipleTextsPanel(elm.getTitle(),elm.getId(),components);
+
             }
-        }*/
+        }
+
+        /*else if(elm.getType().equals("TextArea")){
+                int index = 0;
+                for(JTextField txt : createTextAreaPanel(elm.getTitle())){
+                    components.put(elm.getId() + "-" + index, txt);
+                }*/
 
 
     }
@@ -56,7 +61,7 @@ public class EditorBase extends SimpleEditorHelper{
         if((value=info.get("3")) != null) codeBlock.setText(value);
         */
 
-        /** Example
+
          HashMap<String, String> info = section.getInfo();
 
          for (String key: info.keySet()) {
@@ -66,8 +71,6 @@ public class EditorBase extends SimpleEditorHelper{
 
          revalidate();
          repaint();
-         */
-
     }
 
     @Override
@@ -76,10 +79,8 @@ public class EditorBase extends SimpleEditorHelper{
         section.addInfo("2", title.getText());
         section.addInfo("3", codeBlock.getText());*/
 
-        /** Example
          for (String key: components.keySet()) {
             section.addInfo(key, components.get(key).getText());
          }
-         */
     }
 }

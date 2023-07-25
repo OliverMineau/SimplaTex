@@ -72,7 +72,7 @@ public class TextEditor extends JPanel implements Observer {
 
     @Override
     public void update(){
-        textArea.setText(manager.getCurrentSelectedSection().getDisplayCode());
+        textArea.setText(manager.getCurrentSelectedSection().getLatexDocument().convertToDisplayText());
         textArea.setCaretPosition(0);
 
         manager.getSectionManager().getCurrentSelectedSection().editor.addObserver(this);
@@ -82,7 +82,7 @@ public class TextEditor extends JPanel implements Observer {
 
     @Override
     public void updateJPanel(){
-        textArea.setText(manager.getCurrentSelectedSection().getDisplayCode());
+        textArea.setText(manager.getCurrentSelectedSection().getLatexDocument().convertToDisplayText());
         textArea.setCaretPosition(0);
         System.out.println("Updated textEditor from Jpanel");
     }

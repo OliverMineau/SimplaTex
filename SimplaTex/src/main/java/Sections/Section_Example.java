@@ -6,6 +6,6 @@ public class Section_Example extends Section {
 
     public Section_Example() {
         this.name = "Example";
-        this.displayCode = "";
+        //this.displayCode = "";
     }
 }

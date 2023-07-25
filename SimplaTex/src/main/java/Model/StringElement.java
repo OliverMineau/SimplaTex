@@ -10,6 +10,7 @@ public class StringElement{
     String text = "";
     String type = "";
     String title = "";
+    ArrayList<StringElement> children;
 
     public StringElement(String id, String className, String title, String style, String text, String type) {
         this.id = id;
@@ -18,6 +19,7 @@ public class StringElement{
         this.text = text;
         this.type = type;
         this.title = title;
+        this.children = new ArrayList<>();
     }
 
     public StringElement(String text) {
@@ -75,6 +77,30 @@ public class StringElement{
         this.title = title;
     }
 
+    public ArrayList<StringElement> getChildren() {
+        return children;
+    }
+
+    public void setChildren(ArrayList<StringElement> children) {
+        this.children = children;
+    }
+
+    public void addChild(StringElement child) {
+        this.children.add(child);
+    }
+
+    public void removeChild() {
+        if(children.size()==0) return;
+        this.children.remove(children.size()-1);
+    }
+
+    public String toHTML(){
+        String txt = text;
+        txt = txt.replace("\n","<br>");
+        txt = txt.replace(" ","&nbsp;");
+        txt = txt.replace("\t","&nbsp;&nbsp;");
+        return txt;
+    }
 
     @Override
     public String toString() {

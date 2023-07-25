@@ -24,7 +24,7 @@ public class Editor_Code_Block extends SimpleEditorHelper{
     @Override
     public void updateViews() {
 
-        HashMap<String, String> info = section.getInfo();
+        /*HashMap<String, String> info = section.getInfo();
 
         String value;
         if((value=info.get("1")) != null) title.setText(value);
@@ -32,14 +32,14 @@ public class Editor_Code_Block extends SimpleEditorHelper{
         if((value=info.get("3")) != null) codeBlock.setText(value);
 
         revalidate();
-        repaint();
+        repaint();*/
     }
 
     @Override
     public void saveViews() {
-        section.addInfo("1", language.getText());
+        /*section.addInfo("1", language.getText());
         section.addInfo("2", title.getText());
-        section.addInfo("3", codeBlock.getText());
+        section.addInfo("3", codeBlock.getText());*/
     }
 
 }

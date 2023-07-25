@@ -3,6 +3,11 @@ package Test;
 import Model.LatexDocument;
 import Model.StringElement;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+
 public class LatexDocumentTest {
 
     static String input1 = "\\begin{lstlisting}[language=<span id=\"1\" class=\"Java|Language\" type=\"TextField\" style=\"color:red\">Java</span>, caption=<span id=\"2\" class=\"--TITLE--|Title\" type=\"TextField\" style=\"color:red\">--TITLE--</span>]\n" +
@@ -38,7 +43,19 @@ public class LatexDocumentTest {
             "\\newpage";
 
     public static void main(String[] args) {
-        LatexDocument latexDocument = new LatexDocument(input1);
+
+        String strPath = "res/TexSections/Code_Block.simplatex";
+        String file = "";
+        List<String> allLines = null;
+        try {
+            allLines = Files.readAllLines(Path.of(strPath));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        for (String line : allLines) {
+            file += line + "\n";
+        }
+        LatexDocument latexDocument = new LatexDocument(file);
         //LatexDocument latexDocument = new LatexDocument(input2);
 
         System.out.println("Parse Text : ");

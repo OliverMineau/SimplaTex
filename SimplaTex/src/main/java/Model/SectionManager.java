@@ -24,20 +24,21 @@ public class SectionManager extends Observable {
 
     private void LoadAvailableSections(){
         availableSections = new ArrayList<>();
-        availableSections.add(new Section_Main_Page());
-        availableSections.add(new Section_Title());
-        availableSections.add(new Section_Description());
+        availableSections.add(newSectionFromName("Main Page"));
+        availableSections.add(newSectionFromName("Code Block"));
+        availableSections.add(newSectionFromName("Title"));
+        /*availableSections.add(new Section_Description());
         availableSections.add(new Section_Short_Code());
         availableSections.add(new Section_Code_Block());
         availableSections.add(new Section_Image());
         availableSections.add(new Section_Credits());
         availableSections.add(new Section_Installation());
-        availableSections.add(new Section_Example());
+        availableSections.add(new Section_Example());*/
     }
 
     private void LoadCurrentSections(){
         currentSections = new ArrayList<>();
-        currentSections.add(new Section_Main_Page());
+        currentSections.add(new CustomSection("Main Page",null,"res/TexSections/Main_Page.simplatex"));
     }
 
     public ArrayList<Section> getCurrentSections() {
@@ -84,7 +85,7 @@ public class SectionManager extends Observable {
         int currentIndex = selectedCurrentSection+1;
 
         if( currentIndex >= currentSections.size())
-            currentSections.add(availableSections.get(index));
+            currentSections.add(newSectionFromName(availableSections.get(index).name));
         else
             currentSections.add(currentIndex, availableSections.get(index));
 
@@ -106,5 +107,13 @@ public class SectionManager extends Observable {
 
         selectedCurrentSection = (index<currentSections.size())?index:index-1;
         refreshSectionsView();
+    }
+
+    public Section newSectionFromName(String name){
+        if(name.equals("Main Page")) return new CustomSection("Main Page",null,"res/TexSections/Main_Page.simplatex");
+        if(name.equals("Code Block")) return new CustomSection("Code Block","res/TexSections/Code_Block_Header.simplatex","res/TexSections/Code_Block.simplatex");
+        if(name.equals("Title")) return new CustomSection("Title",null,"res/TexSections/Title.simplatex");
+
+        return null;
     }
 }

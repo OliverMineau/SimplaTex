@@ -13,6 +13,6 @@ public class Section_Code_Block extends Section {
         this.editor = new Editor_Code_Block(this);
         this.name = "Code Block";
         this.header = loadPlainTex(Path.of("res/TexSections/Code_Block_Header.simplatex"));
-        this.displayCode = FONT_START + loadTex(Path.of("res/TexSections/Code_Block.simplatex")) + FONT_END;
+        //this.displayCode = FONT_START + loadTex(Path.of("res/TexSections/Code_Block.simplatex")) + FONT_END;
     }
 }
