@@ -14,7 +14,8 @@ public class ObservableJPanel extends JPanel {
     }
 
     public void addObserver(Observer o) {
-        observers.add(o);
+
+        if(!observers.contains(o)) observers.add(o);
     }
 
     public void update() {

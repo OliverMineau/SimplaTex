@@ -22,6 +22,7 @@ public class PDFViewManager{
         // with a complete, active Viewer UI.
         pdfPanel = factory.buildViewerPanel();
 
+
         // add copy keyboard command
         ComponentKeyBinding.install(controller, pdfPanel);
         // add interactive mouse link annotation support via callback
@@ -35,6 +36,7 @@ public class PDFViewManager{
         System.out.println("PDF path to open : " + filePath.toString());
         controller.openDocument(filePath.toString());
         controller.setPageFitMode(4,true);
+        controller.setPageViewMode(2,true);
     }
 
     public JPanel getPanel(){

@@ -7,19 +7,24 @@ import org.jsoup.nodes.Element;
 
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
+import java.io.IOException;
 import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public abstract class Section {
 
     public String name;
     public String displayCode;
+    public String header;
 
     public SimpleEditorHelper editor;
     private HashMap<String, String> simpleEditorValues = new HashMap<>();
 
-    public String FONT_START = "<b><font face=\"Courier\" size=\"10\">";
+    public String FONT_START = "<b><font face=\"Courier\" size=\"10\" color=\"black\">";
     public String FONT_END = "</font></b>";
     public String RED = "<span style=\"color:red\">";
     public String END = "</span>";
@@ -71,15 +76,15 @@ public abstract class Section {
     }
 
     public String getLatex(){
-
-        //TODO Pas ouf la methode
-        String htmlCode = displayCode.replace("<br>", "\\n");
+        String htmlCode = displayCode.replace("<br>", "\\n*");
         String plainLatex = htmlToPlainText(htmlCode);
-        String latex = plainLatex.replace("\\n","\n");
-        return latex;
+        plainLatex = plainLatex.replace("\\n*", "\n");
+        return plainLatex;
     }
 
     private String htmlToPlainText(String html) {
+        //TODO Revenir avec l'analyse syntaxique custom
+
         try {
             // Create a document to parse the HTML content
             HTMLEditorKit.Parser parser = new ParserDelegator();
@@ -108,6 +113,32 @@ public abstract class Section {
         return simpleEditorValues;
     }
 
+    public String loadTex(Path path){
+        try {
+            String file = "";
+            List<String> allLines = Files.readAllLines(path);
+            for (String line : allLines) {
+                file += line + "\n <br>";
+            }
+            return file;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String loadPlainTex(Path path){
+        try {
+            String file = "";
+            List<String> allLines = Files.readAllLines(path);
+            for (String line : allLines) {
+                file += line + "\n";
+            }
+            return file;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void addInfo(String key, String value){
         simpleEditorValues.put(key, value);
 
@@ -117,8 +148,12 @@ public abstract class Section {
         if(elm != null){
 
             if(value.equals("")) value = elm.className();
-
-            elm.text(value);
+            else if(elm.className().equals("--CODE--")){
+                value = value.replace("\n","<br>");
+                value = value.replace(" ","&nbsp;");
+                value = value.replace("\t","&nbsp;&nbsp;");
+            }
+            elm.html(value);
             displayCode = htmlDoc.html();
         }
     }

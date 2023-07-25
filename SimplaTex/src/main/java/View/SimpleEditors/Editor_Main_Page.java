@@ -25,7 +25,7 @@ public class Editor_Main_Page extends SimpleEditorHelper{
         edLevel = createTextPanel("Level of Education :");
         fieldStdy = createTextPanel("Field of Study :");
         title = createTextPanel("Title :");
-        authors = createMultipleTexts("Authors :");
+        authors = createMultipleTextsPanel("Authors :");
         date = createTextPanel("Date :");
     }
 
@@ -36,16 +36,16 @@ public class Editor_Main_Page extends SimpleEditorHelper{
 
         String value;
 
-        if((value=info.get("ImagePath")) != null) imagePath.setText(value + "YAYAY");
-        if((value=info.get("EdLevel")) != null) edLevel.setText(value);
-        if((value=info.get("FieldStudy")) != null) fieldStdy.setText(value);
-        if((value=info.get("Title")) != null) title.setText(value);
-        if((value=info.get("Date")) != null) date.setText(value);
+        if((value=info.get("1")) != null) imagePath.setText(value);
+        if((value=info.get("2")) != null) edLevel.setText(value);
+        if((value=info.get("3")) != null) fieldStdy.setText(value);
+        if((value=info.get("4")) != null) title.setText(value);
+        if((value=info.get("5")) != null) date.setText(value);
 
         int maxIndex = authors.size(), index = 0;
         String multVal = "";
         while (index < maxIndex && multVal != null){
-            if((multVal=info.get("Author" + index)) != null) authors.get(index).setText(multVal);
+            if((multVal=info.get(6 + "-" + index)) != null) authors.get(index).setText(multVal);
             index++;
         }
 
@@ -66,13 +66,13 @@ public class Editor_Main_Page extends SimpleEditorHelper{
         for (int i = 0; i < authors.size(); i++) {
             authorsText.add(authors.get(i).getText());
         }
+
         //section.addInfos("5", authorsText);
         section.addInfo("5", authorsText.get(0));
 
         section.addInfo("6", date.getText());
 
         System.out.println("Saved SimpleEditor");
-
     }
 
 }

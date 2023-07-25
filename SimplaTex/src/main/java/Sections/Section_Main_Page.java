@@ -3,6 +3,8 @@ package Sections;
 import Model.Section;
 import View.SimpleEditors.Editor_Main_Page;
 
+import java.nio.file.Path;
+
 public class Section_Main_Page extends Section {
 
     String authorSeperator = "  \\vspace{\\baselineskip}\n<br>";
@@ -10,8 +12,8 @@ public class Section_Main_Page extends Section {
     public Section_Main_Page() {
         this.editor = new Editor_Main_Page(this);
         this.name = "Main Page";
-        this.displayCode =
-                FONT_START +
+        this.displayCode = FONT_START + loadTex(Path.of("res/TexSections/Main_Page.simplatex")) + FONT_END;
+                /*FONT_START +
                 "\\begin{titlepage}\n<br>" +
                 "\\begin{center}\n<br>" +
                 "\n<br>" +
@@ -36,7 +38,7 @@ public class Section_Main_Page extends Section {
                 " \n<br>" +
                 "\\end{center}\n<br>" +
                 "\\end{titlepage}\n<br>" +
-                FONT_END;
+                FONT_END;*/
 
     }
 

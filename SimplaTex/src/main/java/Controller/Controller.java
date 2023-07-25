@@ -29,7 +29,7 @@ public class Controller {
     }
 
     public void SectionsOrderChanged(int indexA,int indexB){
-        System.out.println("Scetion " + indexA + " <> " + indexB);
+        System.out.println("Section " + indexA + " <> " + indexB);
         manager.SectionsOrderChanged(indexA, indexB);
     }
 
@@ -39,6 +39,10 @@ public class Controller {
 
     public Path createPDF(){
         return latexManager.SaveToPDF(latexManager.Merge(manager.getSectionManager().getCurrentSections()), getFileName());
+    }
+
+    public void deleteSection(int index){
+        manager.getSectionManager().deleteSection(index);
     }
 
 

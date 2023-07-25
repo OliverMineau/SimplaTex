@@ -23,7 +23,7 @@ public class Editor_Title extends SimpleEditorHelper{
         HashMap<String, String> info = section.getInfo();
 
         String value;
-        if((value=info.get("Title")) != null) title.setText(value);
+        if((value=info.get("1")) != null) title.setText(value);
 
         revalidate();
         repaint();
@@ -31,7 +31,7 @@ public class Editor_Title extends SimpleEditorHelper{
 
     @Override
     public void saveViews() {
-        section.addInfo("Title", title.getText());
+        section.addInfo("1", title.getText());
     }
 
 }

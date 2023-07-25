@@ -12,8 +12,8 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class LatexManager {
 
-    String HEADER = "\\documentclass{article}\n" +
-            "\\usepackage{graphicx} % Required for inserting images\n" +
+    String DOCUMENT_CLASS = "\\documentclass[11pt,a4paper]{article}\n";
+    String HEADER ="\\usepackage{graphicx} % Required for inserting images\n" +
             "\n" +
             "\\begin{document}";
 
@@ -146,17 +146,23 @@ public class LatexManager {
     public String Merge(ArrayList<Section> sections){
 
         String imagePath  = downloadFolderPath.resolve("Untitled.png").toString();
-        String output = HEADER;
+        String PACKAGES = "";
+        String output = "";
 
         for (Section section : sections) {
             output += section.getLatex();
+            if(section.name == "Code Block") PACKAGES += section.header;
         }
 
         output += FOOTER;
 
+        output = output.replace("&nbsp;"," ");
+        output = output.replace(" "," ");
+
         output = output.replace("--PATH TO LOGO--", imagePath);
 
-        return output;
+        String merge = DOCUMENT_CLASS + PACKAGES + HEADER + output;
+        return merge;
     }
 
 

@@ -8,6 +8,8 @@ import Patterns.Observer;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.*;
+import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
 import java.awt.*;
@@ -29,8 +31,22 @@ public class TextEditor extends JPanel implements Observer {
         setLayout(new BorderLayout());
         textArea = new JEditorPane();
         textArea.setContentType("text/html");
+        //textArea.setBackground(Color.gray);
         //textArea.setFont( new Font("Courier", Font.PLAIN, 30));
 
+        /*Document doc = textArea.getDocument();
+        if (doc instanceof PlainDocument) {
+            doc.putProperty(PlainDocument.tabSizeAttribute, 8);
+        }*/
+        
+        
+        
+        
+        
+        
+        
+        
+        
         JScrollPane textEditorScroll = new JScrollPane (textArea,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         add(textEditorScroll);
@@ -59,6 +75,8 @@ public class TextEditor extends JPanel implements Observer {
         textArea.setText(manager.getCurrentSelectedSection().getDisplayCode());
         textArea.setCaretPosition(0);
 
+        manager.getSectionManager().getCurrentSelectedSection().editor.addObserver(this);
+
         System.out.println("Updated textEditor");
     }
 
@@ -72,3 +90,5 @@ public class TextEditor extends JPanel implements Observer {
 
 
 }
+
+

@@ -110,6 +110,7 @@ public abstract class SimpleEditorHelper extends ObservableJPanel {
         JTextArea textArea = new JTextArea();
         textArea.setFont(textFieldFont);
         textArea.setRows(5);
+        textArea.setTabSize(2);
         textArea.getDocument().addDocumentListener(simpleEditorListener);
         jPanel.add(textArea, BorderLayout.SOUTH);
 
@@ -119,7 +120,7 @@ public abstract class SimpleEditorHelper extends ObservableJPanel {
         return textArea;
     }
 
-    public ArrayList<JTextField> createMultipleTexts(String titleText) {
+    public ArrayList<JTextField> createMultipleTextsPanel(String titleText) {
         JPanel jPanel = createTitle(titleText);
         jPanel.setLayout(new GridLayout(0,1));
 

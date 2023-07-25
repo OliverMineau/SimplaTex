@@ -8,13 +8,8 @@ public class Manager {
     //private EditorManager editorManager;
 
     public Manager() {
-        Initialise();
-    }
-
-    private void Initialise(){
         sectionManager = new SectionManager();
     }
-
     public void SectionsOrderChanged(int indexA,int indexB){
         sectionManager.SectionsOrderChanged(indexA, indexB);
     }
@@ -34,6 +29,5 @@ public class Manager {
     public Section getCurrentSelectedSection(){
         return sectionManager.getCurrentSelectedSection();
     }
-
 
 }

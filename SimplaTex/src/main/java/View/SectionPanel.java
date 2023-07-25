@@ -8,10 +8,7 @@ import Patterns.Observer;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 public class SectionPanel extends JPanel implements Observer {
 
@@ -67,14 +64,38 @@ public class SectionPanel extends JPanel implements Observer {
         JLabel label = new JLabel(name);
         label.setFont(new Font("Arial", Font.BOLD, 20));
 
+        JLabel imageLabel = createImage("res/move.png", 30, 30);
+
         //Set the Image
-        ImageIcon icon = new ImageIcon("res/move.png");
-        // Resize the image
-        int imageWidth = 30;
-        int imageHeight = 30;
-        Image image = icon.getImage().getScaledInstance(imageWidth, imageHeight, Image.SCALE_SMOOTH);
-        ImageIcon resizedIcon = new ImageIcon(image);
-        JLabel imageLabel = new JLabel(resizedIcon);
+        if(draggable){
+            JLabel binImg = createImage("res/bin.png", 30, 30);
+            binImg.setBorder(new EmptyBorder(40, 40, 40, 40));
+            itemPanel.add(binImg, BorderLayout.LINE_END);
+
+            Component me = this;
+            binImg.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent mouseEvent) {
+
+                    if(manager.getSectionManager().getCurrentSections().size() == 1) return;
+
+                    Container parent = getParent();
+                    parent.remove(me);
+
+                    controller.deleteSection(index);
+                }
+
+                @Override
+                public void mousePressed(MouseEvent mouseEvent) {}
+                @Override
+                public void mouseReleased(MouseEvent mouseEvent) {}
+                @Override
+                public void mouseEntered(MouseEvent mouseEvent) {}
+                @Override
+                public void mouseExited(MouseEvent mouseEvent) {}
+            });
+        }
+
 
         //Set the padding
         int paddingBetweenComponents = 40;
@@ -104,5 +125,13 @@ public class SectionPanel extends JPanel implements Observer {
     @Override
     public void update() {
 
+    }
+
+    private JLabel createImage(String path, int width, int height){
+        ImageIcon icon = new ImageIcon(path);
+        // Resize the image
+        Image image = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(image);
+        return new JLabel(resizedIcon);
     }
 }

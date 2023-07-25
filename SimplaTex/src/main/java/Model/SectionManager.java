@@ -33,7 +33,6 @@ public class SectionManager extends Observable {
         availableSections.add(new Section_Credits());
         availableSections.add(new Section_Installation());
         availableSections.add(new Section_Example());
-
     }
 
     private void LoadCurrentSections(){
@@ -100,5 +99,12 @@ public class SectionManager extends Observable {
 
     public Section getCurrentSelectedSection(){
         return currentSections.get(selectedCurrentSection);
+    }
+
+    public void deleteSection(int index){
+        currentSections.remove(index);
+
+        selectedCurrentSection = (index<currentSections.size())?index:index-1;
+        refreshSectionsView();
     }
 }
