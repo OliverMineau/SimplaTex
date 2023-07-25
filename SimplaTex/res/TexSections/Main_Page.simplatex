@@ -1,25 +1,25 @@
 \begin{titlepage}
 \begin{center}
 
-\includegraphics[width=0.4\textwidth]{ <span id="1" class="--PATH-TO-LOGO--" style="color:red">--PATH-TO-LOGO--</span>  }~ \\[2cm]
+\includegraphics[width=0.4\textwidth]{ <span id="1" class="--PATH-TO-LOGO--|Logo Path" style="color:red">--PATH-TO-LOGO--</span>  }~ \\[2cm]
 
 {\Large
-  <span id="2" class="--LEVEL-OF-EDUCATION--" style="color:red">--LEVEL-OF-EDUCATION--</span> \\[0.1cm]
-  <span id="3" class="--FIELD-OF-STUDY--" style="color:red">--FIELD-OF-STUDY--</span> \\[1cm]
+  <span id="2" class="--LEVEL-OF-EDUCATION--|Level of education" style="color:red">--LEVEL-OF-EDUCATION--</span> \\[0.1cm]
+  <span id="3" class="--FIELD-OF-STUDY--|Field of study" style="color:red">--FIELD-OF-STUDY--</span> \\[1cm]
 }
 
 \rule{\linewidth}{0.5mm} \\[0.4cm]
-{\LARGE \textbf{ <span id="4" class="--TITLE--" style="color:red">--TITLE--</span> \\[0.4cm]}
+{\LARGE \textbf{ <span id="4" class="--TITLE--|Title" style="color:red">--TITLE--</span> \\[0.4cm]}
 \rule{\linewidth}{0.5mm}} \\[1.5cm]
 
 {\Large
-  <span id="5" class="--AUTHOR--" style="color:red">--AUTHOR--</span> \\
+  <span id="5" class="--AUTHOR--|Author" style="color:red">--AUTHOR--</span> \\
   <span class="skipline">\vspace{\baselineskip}</span>
 }
 
 \vfill
 
-{\Large <span id="6" class="--DATE--" style="color:red">--DATE--</span> }
+{\Large <span id="6" class="--DATE--|Date" style="color:red">--DATE--</span> }
  
 \end{center}
 \end{titlepage}

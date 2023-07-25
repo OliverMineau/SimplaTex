@@ -1,17 +1,101 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LatexDocument {
 
-    private String contentText;
+    private String FONT_START = "<b><font face=\"Courier\" size=\"10\" color=\"black\">";
+    private String FONT_END = "</font></b>";
+
+    private ArrayList<StringElement> contentArray = new ArrayList<>();
+
+    public LatexDocument(String inputText) {
+        findElementsFromInput(inputText);
+    }
+
+    private void findElementsFromInput(String inputText){
+        String START = "<span";
+        String END = "</span>";
+
+        int indexStart = inputText.indexOf(START);
+        addText(inputText.substring(0,indexStart));
+
+        while (indexStart != -1) {
+            int indexEnd = inputText.indexOf(END,indexStart);
+
+            String element = inputText.substring(indexStart,indexEnd+END.length());
+            parseTextElement(element);
+
+            indexStart = inputText.indexOf(START, indexEnd);
+
+            if(indexStart == -1) addText(inputText.substring(indexEnd+END.length()));
+            else addText(inputText.substring(indexEnd+END.length(),indexStart));
+        }
+    }
+
+    private void parseTextElement(String element){
+
+        StringElement stringElement = new StringElement();
+
+        String match;
+        if((match=matchElement("id=\"(\\d+)\"", element)) != null){
+            stringElement.setId(match);
+        }
+
+        if((match=matchElement("class=\"([^\"]+)\"", element)) != null){
+            String[] classTitle = match.split("\\|");
+            stringElement.setClassName(classTitle[0]);
+            stringElement.setTitle(classTitle[1]);
+        }
+
+        if((match=matchElement("type=\"([^\"]+)\"", element)) != null){
+            stringElement.setType(match);
+        }
+
+        if((match=matchElement("style=\"([^\"]+)\"", element)) != null){
+            stringElement.setStyle(match);
+        }
+
+        if((match=matchElement(">([^\"]+)<", element)) != null){
+            stringElement.setText(match);
+        }
+
+        contentArray.add(stringElement);
+    }
+
+    private String matchElement(String regex, String element){
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(element);
+
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+
+        return null;
+    }
+
+
 
 
     /**
      * Ajouter un element apres un autre
      */
-    public void addElement(String afterID, StringElement element) {
+    public void addElementAfter(String afterID, StringElement element) {
+        int elmIndex = findElement(afterID);
+        if(elmIndex == -1) return;
+        int index = elmIndex+1;
+        if(elmIndex+1 == contentArray.size()) contentArray.add(element);
+        else contentArray.add(index,element);
+    }
 
+
+    /**
+     * Ajouter un element
+     */
+    public void addElement(StringElement element) {
+        contentArray.add(element);
     }
 
 
@@ -19,7 +103,9 @@ public class LatexDocument {
      * Supprimer l'element id
      */
     public void removeElement(String id) {
-
+        int index = findElement(id);
+        if(index == -1) return;
+        contentArray.remove(index);
     }
 
 
@@ -27,7 +113,8 @@ public class LatexDocument {
      * modifier le contenu (texte) d'un element
      */
     public void modifyElement(String id, StringElement element) {
-
+        int index = findElement(id);
+        contentArray.set(index, element);
     }
 
 
@@ -35,19 +122,29 @@ public class LatexDocument {
      * Prendre tous les elements de type
      */
     public StringElement getElement(String id) {
-
+        for (StringElement elm : contentArray) {
+            if(elm.id.equals(id)){
+                return elm;
+            }
+        }
         return null;
+    }
+
+    public int findElement(String id) {
+        for (StringElement elm : contentArray) {
+            if(elm.id.equals(id)){
+                return contentArray.indexOf(elm);
+            }
+        }
+        return -1;
     }
 
 
     /**
-     * Prendre tous les elements de type
+     * Prendre tous les elements
      */
-    public ArrayList<StringElement> getElements(String type) {
-        ArrayList<StringElement> stringElements = new ArrayList<>();
-
-
-        return stringElements;
+    public ArrayList<StringElement> getElements() {
+        return contentArray;
     }
 
 
@@ -55,7 +152,15 @@ public class LatexDocument {
      * Ajouter du texte apres un element
      */
     public void addTextAfter(String id, String text) {
+        int elmIndex = findElement(id);
+        if(elmIndex == -1) return;
+        int index = elmIndex+1;
+        if(elmIndex+1 == contentArray.size()) contentArray.add(new StringElement(text));
+        else contentArray.add(index,new StringElement(text));
+    }
 
+    public void addText(String text) {
+        contentArray.add(new StringElement(text));
     }
 
 
@@ -64,8 +169,13 @@ public class LatexDocument {
      * Convertit les <br> en fins de lignes
      * Convertit les &nbsp; en espace
      */
-    public void convertToPlainLatex() {
+    public String convertToPlainLatex() {
+        String output = "";
+        for(StringElement elm : contentArray){
+            output += elm.text;
+        }
 
+        return output;
     }
 
     /**
@@ -74,26 +184,51 @@ public class LatexDocument {
      * Convertit les espace en &nbsp;
      * Convertit les \t en &nbsp; &nbsp;
      */
-    public String convertToDisplayText() {
+    public String convertToDisplayText(){
+        String output = "";
+        output += FONT_START;
 
-        return null;
+        for(StringElement elm : contentArray) {
+            if (elm.type.equals("PlainText")) {
+                output += elm.text;
+
+            }else if(elm.type.equals("TextArea")){
+                String text = elm.text;
+                text = text.replace("\n","<br>");
+                text = text.replace(" ","&nbsp;");
+                text = text.replace("\t","&nbsp;&nbsp;");
+
+                String element = createSpanElement(elm,text);
+
+                output += element;
+
+            }else{
+
+                output += createSpanElement(elm,null);
+            }
+        }
+
+        output += FONT_END;
+        return output;
     }
 
-    /**
-     <html>
-     <head>
-     </head>
-     <body>
-     <b><font face="Courier" size="10" color="black">\begin{lstlisting}[language=Python, caption=</font><font face="Courier" size="10" color="red"><span id="1" class="--TITLE--">--TITLE--</span></font><font face="Courier" size="10" color="black">]<br></font><font face="Courier" size="10" color="red"><span id="2" class="--CODE--">public&nbsp;void&nbsp;updateJPanel(){<br>
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;textArea.setText(manager.getCurrentSelectedSection().getDisplayCode());<br>
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;textArea.setCaretPosition(0);<br>
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("Updated&nbsp;textEditor&nbsp;from&nbsp;Jpanel");<br>
-     &nbsp;&nbsp;&nbsp;&nbsp;}</span></font><font face="Courier" size="10" color="black"><br>
-     \end{lstlisting}<br></font></b>
-     </body>
-     </html>
-     */
+    public String createSpanElement(StringElement elm, String overrideText){
+        String text = (overrideText==null)?elm.text:overrideText;
+        String element = "<span id=\"" +
+                elm.id + "\" class=\"" +
+                elm.className + "\" type=\"" +
+                elm.type + "\" style=\"" +
+                elm.style + "\" >" +
+                text + "</span>";
+
+        return element;
+    }
 
 
+    public void printElements(){
+        for (StringElement elm : getElements()){
+            System.out.println(elm);
+        }
+    }
 
 }

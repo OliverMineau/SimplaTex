@@ -87,8 +87,6 @@ public class TextEditor extends JPanel implements Observer {
         System.out.println("Updated textEditor from Jpanel");
     }
 
-
-
 }
 
 

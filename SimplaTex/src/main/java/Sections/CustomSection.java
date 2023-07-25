@@ -16,5 +16,6 @@ public class CustomSection extends Section {
         this.name = name;
         this.header = (header!=null)?loadPlainTex(Path.of(header)):"";
         this.displayCode = FONT_START + loadTex(Path.of(code)) + FONT_END;
+        //this.latexDocument = new LatexDcument(FONT_START + loadTex(Path.of(code)) + FONT_END)
     }
 }

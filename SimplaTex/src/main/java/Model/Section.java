@@ -18,6 +18,9 @@ import java.util.List;
 public abstract class Section {
 
     public String name;
+
+    //displayCode will be
+    LatexDocument latexDocument;
     public String displayCode;
     public String header;
 
@@ -196,4 +199,7 @@ public abstract class Section {
         return output;
     }
 
+    public LatexDocument getLatexDocument() {
+        return latexDocument;
+    }
 }
