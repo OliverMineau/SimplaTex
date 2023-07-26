@@ -77,7 +77,7 @@ public abstract class Section {
          */
 
         System.out.println("TextEditor code : " + textEditorCode);
-
+        //latexDocument.updateWithDisplayText(textEditorCode);
 
     }
 

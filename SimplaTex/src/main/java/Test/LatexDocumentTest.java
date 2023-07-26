@@ -42,6 +42,30 @@ public class LatexDocumentTest {
             "\n" +
             "\\newpage";
 
+    static String input3 = "  <head>\n" +
+            "    \n" +
+            "  </head>\n" +
+            "  <body>\n" +
+            "    <b><font face=\"Courier\" size=\"10\" color=\"black\">\\begin{lstlisting}[language=\n" +
+            "</font></b>\n" +
+            "    <p id=\"1\">\n" +
+            "      <b><font face=\"Courier\" size=\"10\" color=\"red\"><span id=\"1\" class=\"Java\" title=\"Language\" type=\"TextField\">Java</span></font><font face=\"Courier\" size=\"10\" color=\"black\">\n" +
+            "</font></b>    </p>\n" +
+            "    <b><font face=\"Courier\" size=\"10\" color=\"black\">,&#160;caption=\n" +
+            "</font></b>\n" +
+            "    <p id=\"2\">\n" +
+            "      <b><font face=\"Courier\" size=\"10\" color=\"red\"><span id=\"2\" class=\"--TITLE--\" title=\"Title\" type=\"TextField\">--TITLE--</span></font><font face=\"Courier\" size=\"10\" color=\"black\">\n" +
+            "</font></b>    </p>\n" +
+            "    <b><font face=\"Courier\" size=\"10\" color=\"black\">]<br>\n" +
+            "</font></b>\n" +
+            "    <p id=\"3\">\n" +
+            "      <b><font face=\"Courier\" size=\"10\" color=\"black\">h\n" +
+            "</font></b>    </p>\n" +
+            "    <b><font face=\"Courier\" size=\"10\" color=\"black\"><br>\n" +
+            "    \\end{lstlisting}<br></font></b>\n" +
+            "  </body>\n" +
+            "</html>";
+
     public static void main(String[] args) {
 
         String strPath = "res/TexSections/Code_Block.simplatex";
@@ -56,7 +80,6 @@ public class LatexDocumentTest {
             file += line + "\n";
         }
         LatexDocument latexDocument = new LatexDocument(file);
-        //LatexDocument latexDocument = new LatexDocument(input2);
 
         System.out.println("Parse Text : ");
 
@@ -72,13 +95,16 @@ public class LatexDocumentTest {
 
         //System.out.println(latexDocument.getElement("2"));
 
-        latexDocument.printElements();
+        /*latexDocument.printElements();
 
         System.out.println("\n\nPlain text : \n");
         System.out.println(latexDocument.convertToPlainLatex());
 
         System.out.println("\n\nDisplay text : \n");
-        System.out.println(latexDocument.convertToDisplayText());
+        System.out.println(latexDocument.convertToDisplayText());*/
+
+        latexDocument.convertToDisplayText();
+        latexDocument.updateWithDisplayText(input3);
 
     }
 

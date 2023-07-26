@@ -28,9 +28,13 @@ public class TextEditor extends JPanel implements Observer {
         manager.getSectionManager().addObserver(this);
         manager.getSectionManager().getCurrentSelectedSection().editor.addObserver(this);
 
+
         setLayout(new BorderLayout());
-        textArea = new JEditorPane();
+        //textArea = new JEditorPane();
+        textArea = new CustomJEditorPane();
         textArea.setContentType("text/html");
+        textArea.setEditable(false);
+        //textArea.setEditorKit(new CustomEditorKit());
         //textArea.setBackground(Color.gray);
         //textArea.setFont( new Font("Courier", Font.PLAIN, 30));
 
@@ -39,14 +43,8 @@ public class TextEditor extends JPanel implements Observer {
             doc.putProperty(PlainDocument.tabSizeAttribute, 8);
         }*/
         
-        
-        
-        
-        
-        
-        
-        
-        
+
+
         JScrollPane textEditorScroll = new JScrollPane (textArea,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         add(textEditorScroll);
@@ -54,16 +52,23 @@ public class TextEditor extends JPanel implements Observer {
         textArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent documentEvent) {
+                //System.out.println("1 : " +textArea.getText());
+                //debug(documentEvent);
                 manager.getCurrentSelectedSection().setDisplayCode(textArea.getText());
             }
 
             @Override
             public void removeUpdate(DocumentEvent documentEvent) {
+                //debug(documentEvent);
+
+                //System.out.println("2 : " +textArea.getText());
                 manager.getCurrentSelectedSection().setDisplayCode(textArea.getText());
             }
 
             @Override
             public void changedUpdate(DocumentEvent documentEvent) {
+                //debug(documentEvent);
+                //System.out.println("3 : " +textArea.getText());
                 manager.getCurrentSelectedSection().setDisplayCode(textArea.getText());
             }
         });
@@ -85,6 +90,15 @@ public class TextEditor extends JPanel implements Observer {
         textArea.setText(manager.getCurrentSelectedSection().getLatexDocument().convertToDisplayText());
         textArea.setCaretPosition(0);
         System.out.println("Updated textEditor from Jpanel");
+    }
+
+    public void debug(DocumentEvent documentEvent){
+        try {
+            System.out.println(documentEvent.getDocument().getText(documentEvent.getOffset()-10,documentEvent.getLength()+10));
+            System.out.println(textArea.getText());
+        } catch (BadLocationException e) {
+
+        }
     }
 
 }

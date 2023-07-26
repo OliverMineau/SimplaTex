@@ -8,6 +8,9 @@ public class LatexDocument {
 
     private String FONT_START = "<b><font face=\"Courier\" size=\"10\" color=\"black\">";
     private String FONT_END = "</font></b>";
+    private String START = "<span";
+    private String END = "</span>";
+    private String lastDisplay = "";
 
     private ArrayList<StringElement> contentArray = new ArrayList<>();
 
@@ -16,10 +19,10 @@ public class LatexDocument {
     }
 
     private void findElementsFromInput(String inputText){
-        String START = "<span";
-        String END = "</span>";
 
         int indexStart = inputText.indexOf(START);
+        if(indexStart == -1) return;
+
         addText(inputText.substring(0,indexStart));
 
         while (indexStart != -1) {
@@ -45,9 +48,11 @@ public class LatexDocument {
         }
 
         if((match=matchElement("class=\"([^\"]+)\"", element)) != null){
-            String[] classTitle = match.split("\\|");
-            stringElement.setClassName(classTitle[0]);
-            stringElement.setTitle(classTitle[1]);
+            stringElement.setClassName(match);
+        }
+
+        if((match=matchElement("title=\"([^\"]+)\"", element)) != null){
+            stringElement.setTitle(match);
         }
 
         if((match=matchElement("type=\"([^\"]+)\"", element)) != null){
@@ -172,7 +177,6 @@ public class LatexDocument {
         for(StringElement elm : contentArray){
             output += elm.text;
         }
-
         return output;
     }
 
@@ -183,41 +187,113 @@ public class LatexDocument {
      * Convertit les \t en &nbsp; &nbsp;
      */
     public String convertToDisplayText(){
-        String output = "";
-        output += FONT_START;
+        String output = "", content = "";
 
         for(StringElement elm : contentArray) {
             if (elm.type.equals("PlainText")) {
-                output += elm.toHTML();
+                content += elm.toHTML();
 
             }else if(elm.type.equals("TextArea")){
 
                 String element = createSpanElement(elm,elm.toHTML());
 
-                output += element;
+                content += element;
 
             }else{
 
-                output += createSpanElement(elm,null);
+                content += createSpanElement(elm,null);
             }
         }
 
-        output += FONT_END;
+        lastDisplay = content;
+        lastDisplay = lastDisplay.replace("style=\"color:red\"","");
+
+        output = FONT_START + content + FONT_END;
         return output;
     }
 
 
     public void updateWithDisplayText(String displayText){
 
+        //displayText = displayText.replaceAll("<(?:html|head|body)>|<\\/(?:html|head|body)>\\n","");
+
+
+        displayText = removeHtml(displayText);
+
+        System.out.println("input display text : " + displayText);
+
+        for(StringElement stringElement : contentArray){
+            if(stringElement.id.equals("")) continue;
+
+            String START = "<p id=\""+ stringElement.id + "\">";
+            int indexStart = displayText.indexOf(START);
+            int indexEnd = displayText.indexOf("</p>",indexStart);
+
+            if(!displayText.substring(indexStart,indexEnd).contains("<span")){
+                String strt = displayText.substring(0,indexStart+START.length());
+                String end = displayText.substring(indexEnd);
+                displayText = strt + createSpanElement(stringElement,null) + end;
+            }
+        }
+
+        System.out.println("New display text : " + displayText);
+        System.out.println("Last display text : " + lastDisplay);
+
+        contentArray.clear();
+        findElementsFromInput(displayText);
+
+        /*if(displayText == null || displayText.equals(lastDisplay)) return;
+
+        contentArray.clear();
+        findElementsFromInput(displayText);
+        System.out.println("Content array : " + contentArray.toString());*/
+    }
+
+
+    public String removeHtml(String displayText){
+        String SBODY = "<body>";
+        String EBODY = "</body>";
+
+        int indexStart = displayText.indexOf(SBODY);
+        int indexEnd = displayText.indexOf(EBODY);
+
+        if(indexStart == -1 || indexEnd == -1) return null;
+
+        displayText = displayText.substring(indexStart+SBODY.length(),indexEnd);
+        displayText = displayText.trim();
+        displayText = displayText.replace("&#160;","&nbsp;");
+        displayText = displayText.replace("<font face=\"Courier\" size=\"10\" color=\"black\">","");
+        displayText = displayText.replace("</font>","");
+        displayText = displayText.replace("<font face=\"Courier\" size=\"10\" color=\"red\">","");
+        displayText = displayText.replace("<b>","");
+        displayText = displayText.replace("</b>","");
+        displayText = displayText.replace("\n","");
+        displayText = displayText.replace("\t","");
+
+
+        return displayText;
+    }
+
+    public String convertToSimplatex(String text){
+        String txt = text;
+        txt = txt.replace("<br>","\n");
+        txt = txt.replace("&nbsp;&nbsp;","\t");
+        txt = txt.replace("&nbsp;"," ");
+        return txt;
     }
 
     public String createSpanElement(StringElement elm, String overrideText){
         String text = (overrideText==null)?elm.text:overrideText;
+        String style = "style=\"color:red\">";
+
+        String ds = "<p id=\""+ elm.id +"\">", de = "</p>";
+
         String element = "<span id=\"" +
                 elm.id + "\" class=\"" +
-                elm.className + "\" type=\"" +
-                elm.type + "\" style=\"" +
-                elm.style + "\" >" +
+                elm.className + "\" title=\"" +
+                elm.title + "\" type=\"" +
+                elm.type + "\"" +
+                style +
                 text + "</span>";
 
         return element;
