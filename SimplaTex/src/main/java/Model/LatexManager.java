@@ -150,7 +150,12 @@ public class LatexManager {
         String output = "";
 
         for (Section section : sections) {
-            output += section.getLatex();
+
+            if(section.simpleEditorEnabled){
+                output += section.getLatex();
+            }else{
+                output += section.getDisplayCode();
+            }
             if(section.name == "Code Block") PACKAGES += section.header;
         }
 

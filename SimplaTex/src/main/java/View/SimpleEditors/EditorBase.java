@@ -11,7 +11,6 @@ import java.util.HashMap;
 public class EditorBase extends SimpleEditorHelper{
 
     Section section;
-    HashMap<String, JTextComponent> components;
     public EditorBase(Section section) {
         this.components = new HashMap<>();
 

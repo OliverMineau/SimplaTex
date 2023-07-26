@@ -8,8 +8,10 @@ import View.SimpleEditors.SimpleEditorHelper;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.filechooser.FileView;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.io.File;
+import java.util.HashMap;
 
 public class SimpleEditor extends JPanel implements Observer {
 
@@ -17,6 +19,7 @@ public class SimpleEditor extends JPanel implements Observer {
     Controller controller;
     SimpleEditorHelper selectedSimpleEditor;
     JScrollPane scrollPane;
+    JPanel leftPanel;
 
     public SimpleEditor(Manager manager, Controller controller) {
         this.manager = manager;
@@ -26,7 +29,7 @@ public class SimpleEditor extends JPanel implements Observer {
 
         setLayout(new GridLayout(1, 2));
 
-        JPanel leftPanel = new JPanel(new BorderLayout());
+        leftPanel = new JPanel(new BorderLayout());
 
         // Create the Editor_Main_Page inside a JScrollPane
         scrollPane = new JScrollPane();
@@ -58,8 +61,24 @@ public class SimpleEditor extends JPanel implements Observer {
     @Override
     public void update() {
         SimpleEditorHelper editor = manager.getSectionManager().getCurrentSelectedSection().editor;
-        //editor.updateViews();
         scrollPane.setViewportView(editor);
+
+        boolean enabled = manager.getSectionManager().getCurrentSelectedSection().simpleEditorEnabled;
+        HashMap<String, JTextComponent> components = manager.getSectionManager().getCurrentSelectedSection().editor.components;
+        for (JTextComponent c : components.values()) {
+            c.setEnabled(enabled);
+            c.setDisabledTextColor(Color.gray);
+            c.setBackground((enabled)?Color.white:null);
+        }
+        editor.setEnabled(enabled);
+        leftPanel.setEnabled(enabled);
+        scrollPane.setEnabled(enabled);
+        scrollPane.getHorizontalScrollBar().setEnabled(enabled);
+        scrollPane.getVerticalScrollBar().setEnabled(enabled);
+        scrollPane.getViewport().getView().setEnabled(enabled);
+        scrollPane.setWheelScrollingEnabled(enabled);
+
+        //editor.updateViews();
     }
 
 }

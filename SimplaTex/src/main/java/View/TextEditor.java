@@ -30,18 +30,13 @@ public class TextEditor extends JPanel implements Observer {
 
 
         setLayout(new BorderLayout());
-        //textArea = new JEditorPane();
-        textArea = new CustomJEditorPane();
+        textArea = new JEditorPane();
+        //textArea = new CustomJEditorPane();
         textArea.setContentType("text/html");
-        textArea.setEditable(false);
-        //textArea.setEditorKit(new CustomEditorKit());
-        //textArea.setBackground(Color.gray);
-        //textArea.setFont( new Font("Courier", Font.PLAIN, 30));
+        //textArea.setEditable(false);
 
-        /*Document doc = textArea.getDocument();
-        if (doc instanceof PlainDocument) {
-            doc.putProperty(PlainDocument.tabSizeAttribute, 8);
-        }*/
+        //((AbstractDocument) textArea.getDocument()).setDocumentFilter(new CustomDocumentFilter(textArea));
+
         
 
 
@@ -80,16 +75,19 @@ public class TextEditor extends JPanel implements Observer {
         textArea.setText(manager.getCurrentSelectedSection().getLatexDocument().convertToDisplayText());
         textArea.setCaretPosition(0);
 
+        boolean enabled = manager.getSectionManager().getCurrentSelectedSection().simpleEditorEnabled;
+        textArea.setEnabled(!enabled);
+
         manager.getSectionManager().getCurrentSelectedSection().editor.addObserver(this);
 
-        System.out.println("Updated textEditor");
+        //System.out.println("Updated textEditor");
     }
 
     @Override
     public void updateJPanel(){
         textArea.setText(manager.getCurrentSelectedSection().getLatexDocument().convertToDisplayText());
         textArea.setCaretPosition(0);
-        System.out.println("Updated textEditor from Jpanel");
+        //System.out.println("Updated textEditor from Jpanel");
     }
 
     public void debug(DocumentEvent documentEvent){

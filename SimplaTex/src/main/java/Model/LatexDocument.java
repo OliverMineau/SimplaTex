@@ -1,5 +1,9 @@
 package Model;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,6 +15,8 @@ public class LatexDocument {
     private String START = "<span";
     private String END = "</span>";
     private String lastDisplay = "";
+
+    public String codeText;
 
     private ArrayList<StringElement> contentArray = new ArrayList<>();
 
@@ -208,10 +214,17 @@ public class LatexDocument {
         lastDisplay = content;
         lastDisplay = lastDisplay.replace("style=\"color:red\"","");
 
-        output = FONT_START + content + FONT_END;
+        output = FONT_START + content +  FONT_END;
+
+        //TODO Test
+
         return output;
     }
 
+
+    public void updateDisplayText(String displayText){
+        codeText = displayText;
+    }
 
     public void updateWithDisplayText(String displayText){
 
@@ -220,7 +233,7 @@ public class LatexDocument {
 
         displayText = removeHtml(displayText);
 
-        System.out.println("input display text : " + displayText);
+        //System.out.println("input display text : " + displayText);
 
         for(StringElement stringElement : contentArray){
             if(stringElement.id.equals("")) continue;
@@ -236,8 +249,8 @@ public class LatexDocument {
             }
         }
 
-        System.out.println("New display text : " + displayText);
-        System.out.println("Last display text : " + lastDisplay);
+        //System.out.println("New display text : " + displayText);
+        //System.out.println("Last display text : " + lastDisplay);
 
         contentArray.clear();
         findElementsFromInput(displayText);
@@ -251,6 +264,11 @@ public class LatexDocument {
 
 
     public String removeHtml(String displayText){
+
+        Document doc = Jsoup.parse(displayText);
+        return doc.text();
+
+        /*
         String SBODY = "<body>";
         String EBODY = "</body>";
 
@@ -267,11 +285,9 @@ public class LatexDocument {
         displayText = displayText.replace("<font face=\"Courier\" size=\"10\" color=\"red\">","");
         displayText = displayText.replace("<b>","");
         displayText = displayText.replace("</b>","");
-        displayText = displayText.replace("\n","");
-        displayText = displayText.replace("\t","");
-
-
-        return displayText;
+        displayText = displayText.replace("/b>","");
+        displayText = displayText.replace("<br>","\n");
+        return displayText;*/
     }
 
     public String convertToSimplatex(String text){

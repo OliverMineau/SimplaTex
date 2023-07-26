@@ -15,6 +15,7 @@ public class MainWindow{
     Manager manager;
     Controller controller;
     PDFViewManager pdfViewManager;
+    Editors editors;
 
     JSplitPane leftSplitPanel,editorSplitPanel,middleSplitPanel,rightSplitPanel;
 
@@ -50,7 +51,7 @@ public class MainWindow{
 
 
         //TextEditor & Simple Editor
-        Editors editors = new Editors(manager, controller);
+        editors = new Editors(manager, controller);
         JPanel simpleEditor = editors.getSimpleEditor();
         JPanel textEditor = editors.getTextEditor();
         editorSplitPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
@@ -130,6 +131,13 @@ public class MainWindow{
         return resetButton;
     }
 
+    private JButton editorSwitchMenu() {
+        JButton editorButton = new JButton("Switch Editor : Simple");
+        editorButton.setMnemonic(KeyEvent.VK_E);
+        editorButton.addActionListener(this::mnuNewListener);
+        return editorButton;
+    }
+
     private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(createFileMenu());
@@ -137,6 +145,7 @@ public class MainWindow{
         menuBar.add(createSaveMenu());
         menuBar.add(createResetViewMenu());
         menuBar.add(compileMenu());
+        menuBar.add(editorSwitchMenu());
         return menuBar;
     }
 
@@ -154,6 +163,13 @@ public class MainWindow{
             case KeyEvent.VK_C:
                 Path path = controller.createPDF();
                 pdfViewManager.openPDF(path);
+                break;
+            case KeyEvent.VK_E:
+                String e = "Switch Editor : Code", d = "Switch Editor : Simple";
+                menuItem.setText((menuItem.getText().equals(e))?d:e);
+                manager.getCurrentSelectedSection().simpleEditorEnabled = !manager.getCurrentSelectedSection().simpleEditorEnabled;
+                //Update ui
+                controller.SectionsOrderChanged(manager.getSelectedCurrentSection(), manager.getSelectedCurrentSection());
                 break;
         }
 

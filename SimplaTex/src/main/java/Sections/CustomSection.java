@@ -2,11 +2,7 @@ package Sections;
 
 import Model.LatexDocument;
 import Model.Section;
-import View.SimpleEditor;
 import View.SimpleEditors.EditorBase;
-import View.SimpleEditors.Editor_Code_Block;
-import View.SimpleEditors.Editor_Title;
-import View.SimpleEditors.SimpleEditorHelper;
 
 import java.nio.file.Path;
 

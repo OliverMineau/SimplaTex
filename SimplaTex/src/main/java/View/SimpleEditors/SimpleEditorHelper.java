@@ -22,6 +22,9 @@ public abstract class SimpleEditorHelper extends ObservableJPanel {
     public Font textFieldFont;
     public GridBagConstraints gridBagConstraints;
     private SimpleEditorListener simpleEditorListener;
+    public HashMap<String, JTextComponent> components;
+
+    private int subindex = 0;
 
     public SimpleEditorHelper() {
 
@@ -47,13 +50,15 @@ public abstract class SimpleEditorHelper extends ObservableJPanel {
 
         JTextField textField = new JTextField();
         textField.setFont(textFieldFont);
-        jPanel.add(textField, BorderLayout.CENTER);
+        jPanel.add(textField);
 
         JLabel picLabel = new JLabel();
         picLabel.setBorder(new EmptyBorder(15,0,0,0));
         picLabel.setFont(textFieldFont);
         picLabel.setText("No Image Found");
-        jPanel.add(picLabel, BorderLayout.SOUTH);
+        jPanel.add(picLabel);
+
+        textField.setMaximumSize(new Dimension(Integer.MAX_VALUE,textField.getPreferredSize().height));
 
         textField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -98,7 +103,8 @@ public abstract class SimpleEditorHelper extends ObservableJPanel {
         JTextField textField = new JTextField();
         textField.setFont(textFieldFont);
         textField.getDocument().addDocumentListener(simpleEditorListener);
-        jPanel.add(textField, BorderLayout.SOUTH);
+        textField.setMaximumSize(new Dimension(Integer.MAX_VALUE,textField.getPreferredSize().height));
+        jPanel.add(textField);
 
         gridBagConstraints.gridy++; // Increment the row number for the next element
         add(jPanel, gridBagConstraints);
@@ -134,28 +140,32 @@ public abstract class SimpleEditorHelper extends ObservableJPanel {
 
         //Add main textfield to components
         components.put(index,jTextField);
-        final int[] subindex = {0};
 
         JPanel buttons = new JPanel(new GridLayout(0,2));
+
         JButton addBtn = new JButton("Add");
         JButton rmvBtn = new JButton("Remove");
+        addBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE,addBtn.getPreferredSize().height));
+
         rmvBtn.setVisible(false);
 
         addBtn.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
 
-                subindex[0]++;
+                subindex++;
 
                 JTextField jTextField = new JTextField();
                 jTextField.setFont(textFieldFont);
                 jTextField.getDocument().addDocumentListener(simpleEditorListener);
-                jPanel.add(jTextField);
+                jTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE,jTextField.getPreferredSize().height));
+                jPanel.add(jTextField,subindex);
 
                 //Add textfield to components
-                components.put(index + "-" + subindex[0], jTextField);
+                components.put(index + "-" + subindex, jTextField);
 
-                if(subindex[0] >= 1) rmvBtn.setVisible(true);
+
+                if(subindex >= 1) rmvBtn.setVisible(true);
 
                 jPanel.revalidate();
                 jPanel.repaint();
@@ -175,13 +185,14 @@ public abstract class SimpleEditorHelper extends ObservableJPanel {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
 
-                if(subindex[0] == 0) return;
+                if(subindex == 0) return;
 
-                jPanel.remove(subindex[0]);
+                jPanel.remove(subindex);
 
-                components.remove(index + "-" + subindex[0]);
+                components.remove(index + "-" + subindex);
 
-                if(subindex[0] == 1) {
+                subindex--;
+                if(subindex == 0) {
                     rmvBtn.setVisible(false);
                     return;
                 }
@@ -211,13 +222,14 @@ public abstract class SimpleEditorHelper extends ObservableJPanel {
     }
 
     public JPanel createTitle(String titleText) {
-        BorderLayout borderLayout = new BorderLayout();
-        JPanel jPanel = new JPanel(borderLayout);
+        JPanel jPanel = new JPanel();
+        jPanel.setLayout(new BoxLayout(jPanel, BoxLayout.Y_AXIS));
+
         jPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JLabel label = new JLabel(titleText);
         label.setFont(labelFont);
-        jPanel.add(label, BorderLayout.NORTH);
+        jPanel.add(label);
         return jPanel;
     }
 

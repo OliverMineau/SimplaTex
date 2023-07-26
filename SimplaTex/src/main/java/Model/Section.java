@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import javax.swing.*;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
 import java.io.IOException;
@@ -26,6 +27,7 @@ public abstract class Section {
     public String header;
 
     public SimpleEditorHelper editor;
+    public boolean simpleEditorEnabled = true;
     private HashMap<String, String> simpleEditorValues = new HashMap<>();
 
     public String FONT_START = "<b><font face=\"Courier\" size=\"10\" color=\"black\">";
@@ -72,13 +74,11 @@ public abstract class Section {
 
     public void setDisplayCode(String textEditorCode) {
         //this.displayCode = latexCode;
-        /**
-         * Get the code and transform in StringElements
-         */
 
-        System.out.println("TextEditor code : " + textEditorCode);
+        //System.out.println("TextEditor code : " + textEditorCode);
         //latexDocument.updateWithDisplayText(textEditorCode);
 
+        latexDocument.updateDisplayText(textEditorCode);
     }
 
     @Override
@@ -88,6 +88,10 @@ public abstract class Section {
 
     public String getLatex(){
         return latexDocument.convertToPlainLatex();
+    }
+
+    public String getDisplayCode(){
+        return latexDocument.removeHtml(latexDocument.codeText);
     }
 
     private String htmlToPlainText(String html) {
@@ -153,7 +157,13 @@ public abstract class Section {
         //Edit element from LatexDocument
         StringElement elm = latexDocument.getElement(key);
         if(value.equals("")) elm.text = elm.className;
-        else elm.text = value;
+        else if(elm != null) elm.text = value;
+        else{
+            String parentKey = key.split("-")[0];
+            StringElement parent = latexDocument.getElement(parentKey);
+            StringElement stringElement = new StringElement(key,parent.getClassName(),"",parent.getStyle(),value,parent.type);
+            latexDocument.addElementAfter(parentKey, stringElement);
+        }
     }
 
     /*public void addInfos(String key, ArrayList<String> values){
@@ -197,4 +207,6 @@ public abstract class Section {
     public LatexDocument getLatexDocument() {
         return latexDocument;
     }
+
+
 }

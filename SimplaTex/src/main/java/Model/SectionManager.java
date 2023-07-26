@@ -26,19 +26,20 @@ public class SectionManager extends Observable {
         availableSections = new ArrayList<>();
         availableSections.add(newSectionFromName("Main Page"));
         availableSections.add(newSectionFromName("Code Block"));
-        availableSections.add(newSectionFromName("Title"));
-        /*availableSections.add(new Section_Description());
-        availableSections.add(new Section_Short_Code());
-        availableSections.add(new Section_Code_Block());
-        availableSections.add(new Section_Image());
-        availableSections.add(new Section_Credits());
-        availableSections.add(new Section_Installation());
-        availableSections.add(new Section_Example());*/
+        availableSections.add(newSectionFromName("Big Space"));
+        availableSections.add(newSectionFromName("Image"));
+        availableSections.add(newSectionFromName("Space"));
+        availableSections.add(newSectionFromName("New Page"));
+        availableSections.add(newSectionFromName("Section"));
+        availableSections.add(newSectionFromName("Subsection"));
+        availableSections.add(newSectionFromName("Section"));
+        availableSections.add(newSectionFromName("Table Content"));
+        availableSections.add(newSectionFromName("Text"));
     }
 
     private void LoadCurrentSections(){
         currentSections = new ArrayList<>();
-        currentSections.add(new CustomSection("Main Page",null,"res/TexSections/Main_Page.simplatex"));
+        currentSections.add(newSectionFromName("Main Page"));
     }
 
     public ArrayList<Section> getCurrentSections() {
@@ -112,7 +113,14 @@ public class SectionManager extends Observable {
     public Section newSectionFromName(String name){
         if(name.equals("Main Page")) return new CustomSection("Main Page",null,"res/TexSections/Main_Page.simplatex");
         if(name.equals("Code Block")) return new CustomSection("Code Block","res/TexSections/Code_Block_Header.simplatex","res/TexSections/Code_Block.simplatex");
-        if(name.equals("Title")) return new CustomSection("Title",null,"res/TexSections/Title.simplatex");
+        if(name.equals("Section")) return new CustomSection("Section",null,"res/TexSections/Section.simplatex");
+        if(name.equals("Big Space")) return new CustomSection("Big Space",null,"res/TexSections/Big_Space.simplatex");
+        if(name.equals("Image")) return new CustomSection("Image",null,"res/TexSections/Image.simplatex");
+        if(name.equals("Space")) return new CustomSection("Space",null,"res/TexSections/Space.simplatex");
+        if(name.equals("New Page")) return new CustomSection("New Page",null,"res/TexSections/New_Page.simplatex");
+        if(name.equals("Subsection")) return new CustomSection("Subsection",null,"res/TexSections/Subsection.simplatex");
+        if(name.equals("Table Content")) return new CustomSection("Table Content",null,"res/TexSections/Table_Of_Contents.simplatex");
+        if(name.equals("Text")) return new CustomSection("Text",null,"res/TexSections/Text.simplatex");
 
         return null;
     }
