@@ -1,0 +1,3 @@
+\begin{lstlisting}[language=<span id="1" class="Java" title="Language" type="TextField" style="color:red">Java</span>, caption=<span id="2" class="--TITLE--" title="Title" type="TextField" style="color:red">--TITLE--</span>]
+<span id="3" class="--CODE--" title="Code" type="TextArea" style="color:red">--CODE--</span>
+\end{lstlisting}

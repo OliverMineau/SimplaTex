@@ -32,7 +32,6 @@ public class SectionManager extends Observable {
         availableSections.add(newSectionFromName("New Page"));
         availableSections.add(newSectionFromName("Section"));
         availableSections.add(newSectionFromName("Subsection"));
-        availableSections.add(newSectionFromName("Section"));
         availableSections.add(newSectionFromName("Table Content"));
         availableSections.add(newSectionFromName("Text"));
     }
@@ -111,16 +110,16 @@ public class SectionManager extends Observable {
     }
 
     public Section newSectionFromName(String name){
-        if(name.equals("Main Page")) return new CustomSection("Main Page",null,"res/TexSections/Main_Page.simplatex");
-        if(name.equals("Code Block")) return new CustomSection("Code Block","res/TexSections/Code_Block_Header.simplatex","res/TexSections/Code_Block.simplatex");
-        if(name.equals("Section")) return new CustomSection("Section",null,"res/TexSections/Section.simplatex");
-        if(name.equals("Big Space")) return new CustomSection("Big Space",null,"res/TexSections/Big_Space.simplatex");
-        if(name.equals("Image")) return new CustomSection("Image",null,"res/TexSections/Image.simplatex");
-        if(name.equals("Space")) return new CustomSection("Space",null,"res/TexSections/Space.simplatex");
-        if(name.equals("New Page")) return new CustomSection("New Page",null,"res/TexSections/New_Page.simplatex");
-        if(name.equals("Subsection")) return new CustomSection("Subsection",null,"res/TexSections/Subsection.simplatex");
-        if(name.equals("Table Content")) return new CustomSection("Table Content",null,"res/TexSections/Table_Of_Contents.simplatex");
-        if(name.equals("Text")) return new CustomSection("Text",null,"res/TexSections/Text.simplatex");
+        if(name.equals("Main Page")) return new CustomSection("Main Page",null,"/TexSections/Main_Page.simplatex");
+        if(name.equals("Code Block")) return new CustomSection("Code Block","/TexSections/Code_Block_Header.simplatex","/TexSections/Code_Block.simplatex");
+        if(name.equals("Section")) return new CustomSection("Section",null,"/TexSections/Section.simplatex");
+        if(name.equals("Big Space")) return new CustomSection("Big Space",null,"/TexSections/Big_Space.simplatex");
+        if(name.equals("Image")) return new CustomSection("Image",null,"/TexSections/Image.simplatex");
+        if(name.equals("Space")) return new CustomSection("Space",null,"/TexSections/Space.simplatex");
+        if(name.equals("New Page")) return new CustomSection("New Page",null,"/TexSections/New_Page.simplatex");
+        if(name.equals("Subsection")) return new CustomSection("Subsection",null,"/TexSections/Subsection.simplatex");
+        if(name.equals("Table Content")) return new CustomSection("Table Content",null,"/TexSections/Table_Of_Contents.simplatex");
+        if(name.equals("Text")) return new CustomSection("Text",null,"/TexSections/Text.simplatex");
 
         return null;
     }

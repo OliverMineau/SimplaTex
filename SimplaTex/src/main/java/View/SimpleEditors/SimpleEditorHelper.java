@@ -84,6 +84,7 @@ public abstract class SimpleEditorHelper extends ObservableJPanel {
                     BufferedImage myPicture = ImageIO.read(new File(documentEvent.getDocument().getText(0,documentEvent.getDocument().getLength())));
                     picLabel.setIcon(new ImageIcon(myPicture));
                     picLabel.setText("");
+                    textField.setText(textField.getText().replace("\\","/"));
                 } catch (Exception e) {
                     picLabel.setIcon(null);
                     picLabel.setText("No Image Found");

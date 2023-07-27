@@ -5,10 +5,14 @@ import Controller.DragListener;
 import Model.Manager;
 import Patterns.Observer;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 
 public class SectionPanel extends JPanel implements Observer {
 
@@ -64,11 +68,11 @@ public class SectionPanel extends JPanel implements Observer {
         JLabel label = new JLabel(name);
         label.setFont(new Font("Arial", Font.BOLD, 20));
 
-        JLabel imageLabel = createImage("res/move.png", 30, 30);
+        JLabel imageLabel = createImage("/move.png", 30, 30);
 
         //Set the Image
         if(draggable){
-            JLabel binImg = createImage("res/bin.png", 30, 30);
+            JLabel binImg = createImage("/bin.png", 30, 30);
             binImg.setBorder(new EmptyBorder(40, 40, 40, 40));
             itemPanel.add(binImg, BorderLayout.LINE_END);
 
@@ -128,7 +132,9 @@ public class SectionPanel extends JPanel implements Observer {
     }
 
     private JLabel createImage(String path, int width, int height){
-        ImageIcon icon = new ImageIcon(path);
+        URL url = getClass().getResource(path);
+
+        ImageIcon icon = new ImageIcon(url);
         // Resize the image
         Image image = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon = new ImageIcon(image);

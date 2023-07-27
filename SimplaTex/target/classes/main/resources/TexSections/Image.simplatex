@@ -1,0 +1,5 @@
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.55\textwidth]{ <span id="1" class="--PATH-TO-IMAGE--" title="Image Path" type="Image" style="color:red">--PATH-TO-IMAGE--</span> }
+  \label{fig:GAC}
+\end{figure}

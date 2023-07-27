@@ -1,0 +1,27 @@
+\begin{titlepage}
+\begin{center}
+
+\includegraphics[width=0.4\textwidth]{ <span id="1" class="--PATH-TO-LOGO--|Logo Path" type="Image" style="color:red">--PATH-TO-LOGO--</span>  }~ \\[2cm]
+
+{\Large
+  <span id="2" class="--LEVEL-OF-EDUCATION--|Level of education" type="TextField" style="color:red">--LEVEL-OF-EDUCATION--</span> \\[0.1cm]
+  <span id="3" class="--FIELD-OF-STUDY--|Field of study" type="TextField" style="color:red">--FIELD-OF-STUDY--</span> \\[1cm]
+}
+
+\rule{\linewidth}{0.5mm} \\[0.4cm]
+{\LARGE \textbf{ <span id="4" class="--TITLE--|Title" type="TextField" style="color:red">--TITLE--</span> \\[0.4cm]}
+\rule{\linewidth}{0.5mm}} \\[1.5cm]
+
+{\Large
+  <span id="5" class="--AUTHOR--|Author" type="MultiText" style="color:red">--AUTHOR--</span> \\
+  <span class="skipline">\vspace{\baselineskip}</span>
+}
+
+\vfill
+
+{\Large <span id="6" class="--DATE--|Date" type="TextField" style="color:red">--DATE--</span> }
+ 
+\end{center}
+\end{titlepage}
+
+\newpage
