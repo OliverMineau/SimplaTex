@@ -73,7 +73,7 @@ public class SectionPanel extends JPanel implements Observer {
         //Set the Image
         if(draggable){
             JLabel binImg = createImage("/bin.png", 30, 30);
-            binImg.setBorder(new EmptyBorder(40, 40, 40, 40));
+            binImg.setBorder(new EmptyBorder(0, 40, 0, 40));
             itemPanel.add(binImg, BorderLayout.LINE_END);
 
             Component me = this;
@@ -100,18 +100,18 @@ public class SectionPanel extends JPanel implements Observer {
             });
         }
 
-
         //Set the padding
         int paddingBetweenComponents = 40;
-        label.setBorder(new EmptyBorder(paddingBetweenComponents, paddingBetweenComponents, paddingBetweenComponents, paddingBetweenComponents));
-        imageLabel.setBorder(new EmptyBorder(paddingBetweenComponents, paddingBetweenComponents, paddingBetweenComponents, paddingBetweenComponents));
+        int paddingBetweenH = 10;
+        label.setBorder(new EmptyBorder(paddingBetweenH, paddingBetweenComponents, paddingBetweenH, paddingBetweenComponents));
+        imageLabel.setBorder(new EmptyBorder(paddingBetweenH, paddingBetweenComponents, paddingBetweenH, paddingBetweenComponents));
 
         itemPanel.add(imageLabel, BorderLayout.LINE_START);
         itemPanel.add(label, BorderLayout.CENTER);
 
         add(itemPanel);
 
-        add(Box.createVerticalStrut(20));
+        add(Box.createVerticalStrut(10));
 
         setMaximumSize(new Dimension(1920,120));
 
