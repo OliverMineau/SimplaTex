@@ -33,7 +33,6 @@ public class TextEditor extends JPanel implements Observer {
         textArea = new JEditorPane();
         //textArea = new CustomJEditorPane();
         textArea.setContentType("text/html");
-        //textArea.setEditable(false);
 
         //((AbstractDocument) textArea.getDocument()).setDocumentFilter(new CustomDocumentFilter(textArea));
 

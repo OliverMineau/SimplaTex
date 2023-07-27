@@ -120,6 +120,8 @@ public abstract class SimpleEditorHelper extends ObservableJPanel {
         textArea.setFont(textFieldFont);
         textArea.setRows(5);
         textArea.setTabSize(2);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
         textArea.getDocument().addDocumentListener(simpleEditorListener);
         jPanel.add(textArea, BorderLayout.SOUTH);
 
